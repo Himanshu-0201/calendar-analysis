@@ -38,7 +38,6 @@ const initializeOAuthClient = async (user_access_token) => {
 
     try {
 
-        // token = JSON.parse(await fs.readFile(TOKEN_PATH, 'utf-8'));
 
         // Set OAuth2 credentials
         oauth2Client.setCredentials({
@@ -59,120 +58,6 @@ const initializeOAuthClient = async (user_access_token) => {
 };
 
 
-
-// these is no need to create event for this application so you can eliminate this 
-export const createEvent = async (req, res) => {
-
-
-    // need to access token from the req here, (queury) 
-    const auth = await initializeOAuthClient(req);
-    if (!auth) {
-        res.send("token doesn't exits or invalid");
-    }
-
-
-     
-    const event = {
-
-        "summary": "Google I/O 2015",
-        "description": "A chance to hear more about Google's developer products.",
-        "start": {
-            "dateTime": "2024-10-21T17:00:00+05:30",
-            "timeZone": "Asia/Kolkata"
-        },
-        "end": {
-            "dateTime": "2024-10-21T18:00:00+05:30",
-            "timeZone": "Asia/Kolkata"
-        }
-    }
-
-    calendar.events.insert({
-        auth: auth,
-        calendarId: 'primary',
-        resource: event
-    }, (error, event) => {
-
-        if (error) {
-            console.log(error);
-            res.send("Failed to create event");
-            return;
-        }
-        else {
-            res.send("event created succussfully");
-        }
-
-    });
-
-};
-
-
-export const readEvents = async (req, res) => {
-
-
-    // need to access token from the req here, (queury) 
-
-    const auth = await initializeOAuthClient(req);
-
-    if (!auth) {
-        return res.send("token doesn't exits or invalid");
-    }
-
-    const calendar = google.calendar({ version: 'v3', auth });
-
-
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0); // Start of the day
-    const todayEnd = new Date();
-    todayEnd.setHours(23, 59, 59, 999); // End of the day
-
-    const response = await calendar.events.list({
-        calendarId: 'primary',
-        timeMin: todayStart.toISOString(),
-        timeMax: todayEnd.toISOString(),
-        singleEvents: true,
-        orderBy: 'startTime',
-    });
-
-    const items = response.data.items;
-
-    const userEvents = items.map((item) => {
-
-        const title = item.summary;
-        const start = item.start.dateTime;
-        const end = item.end.dateTime;
-
-        return {
-            title: title,
-            start: start,
-            end: end
-        }
-    });
-
-
-    const eventsArray = [];
-
-    userEvents.forEach(event => {
-        const startTime = new Date(event.start);
-        const endTime = new Date(event.end);
-        const duration = (endTime - startTime) / 1000 / 60; // duration in minutes
-
-        // Check if the title already exists in the eventsArray
-        const existingEntry = eventsArray.find(entry => entry.title === event.title);
-
-        if (existingEntry) {
-            // If it exists, add the duration
-            existingEntry.duration += duration;
-        } else {
-            // If it doesn't exist, create a new entry
-            eventsArray.push({ title: event.title, duration });
-        }
-
-    });
-
-    console.log(eventsArray);
-
-    res.send(eventsArray);
-}
 
 
 export const dayCalendarData = async (req, res) => {
@@ -228,6 +113,7 @@ export const dayCalendarData = async (req, res) => {
 
         const items = response.data.items;
 
+
         const userEvents = items.map((item) => {
 
             const title = item.summary;
@@ -250,7 +136,7 @@ export const dayCalendarData = async (req, res) => {
             const duration = (endTime - startTime) / 1000 / 60; // duration in minutes
 
             // Normalize the event title by trimming and converting it to lowercase
-            const normalizedTitle = event.title.trim().toLowerCase();
+            const normalizedTitle = event.title.toLowerCase().replace(/\s+/g, ' ').trim();;
 
             // Check if the title already exists in the eventsArray
             const existingEntry = eventsArray.find(entry => entry.title === normalizedTitle);
@@ -266,7 +152,6 @@ export const dayCalendarData = async (req, res) => {
 
         });
 
-        // console.log(user);
 
         return res.json({ userName: user.username, events: eventsArray });
 
