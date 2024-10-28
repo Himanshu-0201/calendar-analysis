@@ -5,6 +5,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import DeniedAccess from "./components/DeniedAccess/DeniedAccess";
 
 
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
     element: <LayOut />,
     // loader : {}
   },
+  {
+    path : "access-denied",
+    element : <DeniedAccess />
+  }
 ]);
 
 

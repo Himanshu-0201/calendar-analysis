@@ -1,7 +1,7 @@
 
 
 import Avatar from "./Avatar/Avatar.js";
-import SingIn from "./SignIn/SignIn.js";
+import SingIn from "../SignIn/SignIn.js";
 
 import "./Nav.scss";
 import { useSelector } from "react-redux";

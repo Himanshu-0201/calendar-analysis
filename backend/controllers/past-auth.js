@@ -4,7 +4,7 @@ import { google } from 'googleapis';
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from '../models/User.js';
-import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI_ROOT, REDIRECT_URI_SUCC_SIGN_IN } from '../config.js';
+import { CLIENT_ID, CLIENT_SECRET, FAILED_AUTH, REDIRECT_URI_ROOT, REDIRECT_URI_SUCC_SIGN_IN } from '../config.js';
 dotenv.config();
 
 
@@ -31,8 +31,10 @@ export const succussfullySignIn = async (req, res) => {
 
     const { code } = req.query;
 
+
+
     if (!code) {
-        return res.status(400).send('Code not provided');
+        return res.redirect(FAILED_AUTH);
     }
 
 

@@ -3,7 +3,7 @@
 
 import { FaSignInAlt } from "react-icons/fa";
 import "./SignIn.scss";
-import config from "../../../config";
+import config from "../../config";
 // import { useEffect } from "react";
 
 let user = true;

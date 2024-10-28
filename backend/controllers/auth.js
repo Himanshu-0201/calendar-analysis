@@ -46,8 +46,10 @@ export const signInFun = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("failed to create URL")
+        console.log("failed to create URL");
+
     }
+
 
 
     res.redirect(authorizationUrl);
