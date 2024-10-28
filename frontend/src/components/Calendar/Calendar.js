@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { AiOutlineCalendar } from "react-icons/ai"; // Calendar icon
-import DatePicker from "react-datepicker"; // Date picker
 import "react-datepicker/dist/react-datepicker.css"; // Date picker styles
 import "./Calendar.scss"; // Your styles
 import { useDispatch, useSelector } from "react-redux";
 import { updateCurrDate } from "../../features/userInfoSlice/userInfoSlice";
 import { isToday, isYesterday } from "../../utils/dateUtils";
+import CustomDatePicker from "./DatePicker/DatePicker";
 
 const Calendar = () => {
     const currDateStr = useSelector((state) => state.userInfo.currDate);
@@ -80,36 +80,11 @@ const Calendar = () => {
 
             {/* Date Picker Component */}
             {isDatePickerOpen && (
-                <div className="absolute z-10 mt-2 bg-white rounded-lg shadow-lg border border-gray-300">
-                    <DatePicker
-                        selected={selectedDate}
-                        onChange={handleDateChange}
-                        className="block w-full border-none p-2 focus:ring-0 focus:outline-none"
-                        inline
-                        calendarClassName="bg-white rounded-lg"
-                        dayClassName={(date) => {
-                            const today = new Date();
-                            return date.getDate() === today.getDate() &&
-                                date.getMonth() === today.getMonth() &&
-                                date.getFullYear() === today.getFullYear()
-                                ? 'bg-blue-100 font-bold rounded-full'
-                                : 'hover:bg-gray-200 rounded-full';
-                        }}
-                        renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
-                            <div className="flex justify-between items-center bg-purple-600 text-white p-2 rounded-t-lg">
-                                <button onClick={decreaseMonth} className="hover:bg-purple-500 p-1 rounded">
-                                    <FaAngleLeft />
-                                </button>
-                                <span className="font-bold">
-                                    {date.toLocaleString("default", { month: "long" })} {date.getFullYear()}
-                                </span>
-                                <button onClick={increaseMonth} className="hover:bg-purple-500 p-1 rounded">
-                                    <FaAngleRight />
-                                </button>
-                            </div>
-                        )}
-                    />
-                </div>
+
+                <CustomDatePicker
+                    handleDateChange={handleDateChange}
+                    selectedDate={selectedDate}
+                />
             )}
         </div>
     );
