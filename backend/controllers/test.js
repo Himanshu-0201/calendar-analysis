@@ -1,7 +1,6 @@
 
 import { join } from "path";
 import { cwd } from "process";
-import fs from "fs/promises";
 
 
 const eventsData = [{
@@ -60,7 +59,6 @@ export const testSingIn = async (req, res) => {
         }
         else {
 
-            // create jwt token for sign in 
         }
 
         res.send("user succussfully signed in");

@@ -1,9 +1,5 @@
-// import server from "../app.js";
 
 import { google } from 'googleapis';
-import { join } from "path";
-import { cwd } from "process";
-import fs from "fs/promises";
 
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -18,20 +14,6 @@ dotenv.config();
 
 export const succussfullySignIn = async (req, res) => {
     
-
-
-
-    const credential_file_path = join(cwd(), './credentials.json');
-    const content = await fs.readFile(credential_file_path);
-    const file_data = await JSON.parse(content);
-    const credentials = file_data.web;
-
-    // const client_id = credentials.client_id;
-
-    // const YOUR_CLIENT_ID = credentials.client_id;
-    // const YOUR_CLIENT_SECRET = credentials.client_secret;
-
-    // const YOUR_REDIRECT_URL = "http://localhost:8000/succ-sign-in"; // why I am suing this ?
 
 
     const  YOUR_CLIENT_ID = CLIENT_ID;
@@ -82,8 +64,6 @@ export const succussfullySignIn = async (req, res) => {
 
             let user = await User.findOne({ email : userEmail });
 
-            // console.log("does user exists " + user);
-
             if (!user) {
 
                 user = new User({
@@ -131,8 +111,6 @@ export const succussfullySignIn = async (req, res) => {
                 maxAge: 60 * 60 * 1000 // 1 hour expiry
             });
 
-            // const redirectUrl = "http://localhost:3000/"; // replace with soft code
-            
             const redirectUrl = REDIRECT_URI_ROOT;
             res.redirect(redirectUrl);
 

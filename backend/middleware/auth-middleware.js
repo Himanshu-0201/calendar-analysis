@@ -1,10 +1,8 @@
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 
 const authToken = (req, res, next)=>{
-    const token = req.cookies.token || req.headers['authorization']; // why to use headers
 
-    // console.log(token);
+    const token = req.cookies.token || req.headers['authorization']; // why to use headers
 
 
     if (!token) {
@@ -17,7 +15,6 @@ const authToken = (req, res, next)=>{
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded; // Store user info in request
 
-        // console.log(decoded);
 
         next();
         

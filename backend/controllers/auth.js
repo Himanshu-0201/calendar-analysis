@@ -1,33 +1,13 @@
 
 import { google } from 'googleapis';
-// import { join } from "path";
-// import { cwd } from "process";
-// import fs from "fs/promises";
-// import dotenv from "dotenv";
-// dotenv.config();
-
 import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI_SUCC_SIGN_IN, scopes } from '../config.js';
 
-// const getCredentials = async () => {
 
-//     const credential_file_path = join(cwd(), './credentials.json');
-//     const content = await fs.readFile(credential_file_path);
-//     const file_data = await JSON.parse(content);
-//     const credentials = file_data.web;
-
-//     return credentials;
-// }
 
 
 export const signInFun = async (req, res) => {
 
 
-
-    // const credentials = await getCredentials();
-    // const YOUR_CLIENT_ID = credentials.client_id;
-    // const YOUR_CLIENT_SECRET = credentials.client_secret;
-    // const YOUR_REDIRECT_URL = "http://localhost:8000/succ-sign-in"; // can I replace it by soft coding
-    
     const YOUR_CLIENT_ID = CLIENT_ID;
     const YOUR_CLIENT_SECRET = CLIENT_SECRET;
     const YOUR_REDIRECT_URL = REDIRECT_URI_SUCC_SIGN_IN;

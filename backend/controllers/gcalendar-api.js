@@ -1,45 +1,26 @@
-// import { auth } from "googleapis/build/src/apis/abusiveexperiencereport";
-// import { calendar } from "googleapis/build/src/apis/calendar/index.js";
+
 
 import { google } from "googleapis";
 
 const calendar = google.calendar("v3");
-// import fs from 'fs/promises';
 
 import { join } from 'path';
 import { cwd } from 'process';
 import User from "../models/User.js";
-// import { query } from "express";
 
 import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI_SUCC_SIGN_IN } from "../config.js";
 
 
-// const TOKEN_PATH = join(cwd(), 'token.json');
 const CREDENTIALS_PATH = join(cwd(), 'credentials.json');
 
 
 const initializeOAuthClient = async (user_access_token) => {
-    // Load client secrets from credentials.json
-    // const credentials = JSON.parse(await fs.readFile(CREDENTIALS_PATH, 'utf-8'));
-    // console.log(credentials);
-    // const { client_id, client_secret, redirect_uris } = credentials.installed;
 
-
-    // const { client_id, client_secret, redirect_uris } = credentials.web;
-
-    // const {client_id, client_secret, }  = {  }
 
     const client_id = CLIENT_ID;
     const client_secret = CLIENT_SECRET;
     const succ_sign_in_url = REDIRECT_URI_SUCC_SIGN_IN;
 
-
-    // Initialize OAuth2 client with the loaded credentials
-    // const oauth2Client = new google.auth.OAuth2(
-    //     client_id,
-    //     client_secret,
-    //     redirect_uris[0]
-    // );
 
     // Initialize OAuth2 client with the loaded credentials
     const oauth2Client = new google.auth.OAuth2(
@@ -51,11 +32,9 @@ const initializeOAuthClient = async (user_access_token) => {
 
     // Load token from tokens.json
     let access_token = user_access_token;
-    // let refresh_token = req.session.refresh_token;
 
     if (!access_token) return false;
 
-    // console.log(access_token);
 
     try {
 
@@ -235,7 +214,6 @@ export const dayCalendarData = async (req, res) => {
     const startDayTime = currDateStartTime; //  set it according to user
     const endDayTime = currDateEndTime; // set it according to user
 
-    // console.log(startDayTime + " " + endDayTime);
 
 
     try {
