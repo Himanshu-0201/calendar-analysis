@@ -13,6 +13,8 @@ const Calendar = () => {
     const dispatch = useDispatch();
     const currDate = new Date(currDateStr);
 
+    const isSignedIn = useSelector(state => state.userInfo.isSignedIn);
+
     // State to manage the date picker visibility
     const [isDatePickerOpen, setDatePickerOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(currDate);
@@ -53,7 +55,10 @@ const Calendar = () => {
             <div className="_calendar-buttons-container flex items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm py-2.5 text-center">
                 {/* Left Arrow */}
                 <div className="w-1/4">
-                    <button type="button" onClick={decreaseDate}>
+                    <button
+                        disabled={!isSignedIn}
+                        type="button"
+                        onClick={decreaseDate}>
                         <FaAngleLeft />
                     </button>
                 </div>
@@ -61,6 +66,7 @@ const Calendar = () => {
                 {/* Middle Text and Calendar Icon */}
                 <div className="w-1/2 flex items-center justify-center">
                     <button
+                        disabled={!isSignedIn}
                         type="button"
                         className="flex items-center space-x-2 cursor-pointer"
                         onClick={() => setDatePickerOpen((prev) => !prev)}
@@ -72,7 +78,10 @@ const Calendar = () => {
 
                 {/* Right Arrow */}
                 <div className="w-1/4">
-                    <button type="button" onClick={increaseDate}>
+                    <button
+                        disabled={!isSignedIn}
+                        type="button"
+                        onClick={increaseDate}>
                         <FaAngleRight />
                     </button>
                 </div>
