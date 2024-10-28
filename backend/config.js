@@ -11,17 +11,18 @@ export const mongoDBUrl = process.env.MONGO_DB_URL;
 
 
 
-
-
-
 //  google auth credentials
 export const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 export const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 // redirect urls
-export const  REDIRECT_URI_SUCC_SIGN_IN = process.env.REDIRECT_URI_SUCC_SIGN_IN;
-export const REDIRECT_URI_ROOT = process.env.REDIRECT_URI_ROOT;
+export const  REDIRECT_URI_SUCC_SIGN_IN = "http://localhost:8000/succ-sign-in";
+export const REDIRECT_URI_ROOT = "http://localhost:3000";
 export const FAILED_AUTH = "http://localhost:3000/access-denied";
+
+// not used so far
+export const REDIRECT_URI_SUCC_SIGN_OUT="http://localhost:8000/succ-sign-out"
+export const REDIRECT_URI_LOCAL='http://localhost'
 
 
 
