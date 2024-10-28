@@ -3,8 +3,8 @@
 /backend/node_modules/
 
 #ignore .env file
-/frontend/.env
-/backend/.env
+*.env
+*.env
 
 #ignored credentials.json file
 /backend/credentials.json
