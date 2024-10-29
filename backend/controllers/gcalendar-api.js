@@ -128,32 +128,7 @@ export const dayCalendarData = async (req, res) => {
         });
 
 
-        const eventsArray = [];
-
-        userEvents.forEach(event => {
-            const startTime = new Date(event.start);
-            const endTime = new Date(event.end);
-            const duration = (endTime - startTime) / 1000 / 60; // duration in minutes
-
-            // Normalize the event title by trimming and converting it to lowercase
-            const normalizedTitle = event.title.toLowerCase().replace(/\s+/g, ' ').trim();;
-
-            // Check if the title already exists in the eventsArray
-            const existingEntry = eventsArray.find(entry => entry.title === normalizedTitle);
-
-            if (existingEntry) {
-                // If it exists, add the duration
-                existingEntry.duration += duration;
-            } else {
-                // If it doesn't exist, create a new entry
-                eventsArray.push({ title: normalizedTitle, duration });
-            }
-
-
-        });
-
-
-        return res.json({ userName: user.username, events: eventsArray });
+        return res.json({ userName: user.username, events: userEvents });
 
     } catch (error) {
         console.log(error);

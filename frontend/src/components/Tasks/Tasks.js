@@ -5,7 +5,7 @@ import { TbLoader3 } from "react-icons/tb";
 import config from '../../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, userSingOut } from '../../features/userInfoSlice/userInfoSlice';
-import { calculateTotalTimeSpend, calPercentage, convertMinutesToHours } from '../../utils/mathUtils';
+import { calculateTotalTimeSpend, calPercentage, convertMinutesToHours, modifyEventsForTasksComponent } from '../../utils/mathUtils';
 import axios from 'axios';
 
 // you can import data from here.
@@ -16,12 +16,13 @@ const Tasks = () => {
 
     const [loading, setLoading] = useState(true);
 
-    
+
     const currDateStr = useSelector(state => state.userInfo.currDate)
-    const events = useSelector(state => state.userInfo.events);
-    
+    const eventsList = useSelector(state => state.userInfo.events);
+
+    const events = modifyEventsForTasksComponent(eventsList);
+
     const currDate = new Date(currDateStr);
-    
     const dispatch = useDispatch();
 
 
@@ -41,15 +42,10 @@ const Tasks = () => {
                 const url = `${config.eventsData}?date=${encodeURIComponent(formattedDate)}`;
 
 
-                // const response = await fetch(url, {
-                //     method: "GET",
-                //     credentials: 'include'
-                // });
-
-                const response =  await axios({
+                const response = await axios({
                     signal: controller.signal,
-                    method : "GET",
-                    url : url,
+                    method: "GET",
+                    url: url,
                     withCredentials: true,
                 })
 
@@ -60,24 +56,7 @@ const Tasks = () => {
                     const userName = data.userName;
                     const calculatedAllTimeSpend = calculateTotalTimeSpend(data.events);
 
-
-
-                    const events = data.events
-                        .map(event => {
-                            const eventName = event.title.charAt(0).toUpperCase() + event.title.slice(1);
-                            const totalTimeSpend = convertMinutesToHours(event.duration);
-                            const percentage = calPercentage(event.duration, calculatedAllTimeSpend);
-
-                            return {
-                                eventName: eventName,
-                                totalTimeSpend: totalTimeSpend,
-                                percentage: percentage,
-                                duration: event.duration // Keep the original duration for sorting
-                            };
-                        })
-                        .sort((a, b) => b.duration - a.duration) // Sort by duration in descending order
-                        .map(({ duration, ...rest }) => rest); // Remove duration if not needed in the final output
-
+                    const events = data.events;
 
                     dispatch(updateUser({ name: userName, events: events, currDate: currDateStr, allTimeSpend: calculatedAllTimeSpend }));
                 }
@@ -87,7 +66,7 @@ const Tasks = () => {
 
             } catch (error) {
 
-                if(error.response && error.response.status === 401){
+                if (error.response && error.response.status === 401) {
                     dispatch(userSingOut());
                 }
 
@@ -104,12 +83,14 @@ const Tasks = () => {
         fetchData();
 
 
-        return ()=>{ 
-            controller.abort() 
+        return () => {
+            controller.abort()
         }
 
 
     }, [currDateStr]);
+
+    
 
 
     const tableEventsData = events ? events : [];
