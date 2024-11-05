@@ -7,12 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, userSingOut } from '../../features/userInfoSlice/userInfoSlice';
 import { calculateTotalTimeSpend, calPercentage, convertMinutesToHours, modifyEventsForTasksComponent } from '../../utils/mathUtils';
 import axios from 'axios';
+import { updateLoadingState } from '../../features/firstTimeLoaderSlice';
 
 // you can import data from here.
 
 
 
-const Tasks = () => {
+const Tasks = ({firstTimeFetchComplete}) => {
 
     const [loading, setLoading] = useState(true);
 
@@ -59,6 +60,8 @@ const Tasks = () => {
                     const events = data.events;
 
                     dispatch(updateUser({ name: userName, events: events, currDate: currDateStr, allTimeSpend: calculatedAllTimeSpend }));
+                    firstTimeFetchComplete();  // if request success , then I need to close the loading state
+
                 }
                 else {
                     console.log("auth failed, task.js")
@@ -68,12 +71,16 @@ const Tasks = () => {
 
                 if (error.response && error.response.status === 401) {
                     dispatch(userSingOut());
+                    firstTimeFetchComplete();  // if request failed , then I need to close the loading state
                 }
 
+
+                
                 console.log("problem to fetch data, see Task.js");
             }
             finally {
                 setLoading(false);
+                
             }
 
 
