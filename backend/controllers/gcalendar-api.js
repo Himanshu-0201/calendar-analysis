@@ -65,14 +65,12 @@ export const dayCalendarData = async (req, res) => {
 
     const userEmail = req.user.email;
 
-    // console.log(userEmail);
 
     const user = await User.findOne({ email: userEmail });
     const access_token = user.accessToken;
 
 
 
-    // need to access token from the req here, (queury) 
     const auth = await initializeOAuthClient(access_token);
 
     // console.log(auth);
@@ -138,8 +136,74 @@ export const dayCalendarData = async (req, res) => {
 
 }
 
-export const weekEventsData = (req, res) => {
-    res.send("Here will be weekly data publish soon");
+export const weekEventsCalendarData = async (req, res) => {
+
+    // const userEmail = req.user.email;
+    const userEmail = "nagar.himanshu.1802@gmail.com";  // extract it by request
+    const user = await User.findOne({ email: userEmail });
+    const access_token = user.accessToken;
+
+
+    const auth = await initializeOAuthClient(access_token);
+
+    if (!auth) {
+        return res.json({ error: "google access token expired or something else" });
+    }
+
+
+    const date = new Date() // extract it from the request
+
+    const dayOfWeek = date.getDay();
+
+    const startWeekDay = new Date(date);
+    startWeekDay.setDate(startWeekDay.getDate() - dayOfWeek + 1);
+
+    const endWeekDay = new Date(date);
+    endWeekDay.setDate(startWeekDay.getDate() + 6);
+
+    const startWeekTime = startWeekDay;
+    startWeekTime.setHours(0, 0, 0, 0);
+
+    const endWeekTime = endWeekDay;
+    endWeekTime.setHours(23, 59, 59, 999);
+
+
+    const calendar = google.calendar({ version: 'v3', auth });
+
+
+    try {
+
+        const response = await calendar.events.list({
+            calendarId: 'primary', // you need to tell which calendar do you want to access, primary or secondary 
+            timeMin: startWeekTime.toISOString(),
+            timeMax: endWeekTime.toISOString(),
+            singleEvents: true,
+            orderBy: 'startTime',
+        });
+
+        const items = response.data.items;
+
+        const userEvents = items.map((item) => {
+
+            const title = item.summary;
+            const start = item.start.dateTime;
+            const end = item.end.dateTime;
+
+            return {
+                title: title,
+                start: start,
+                end: end
+            }
+        });
+
+        return res.json({ userName: user.username, events: userEvents });
+
+
+    } catch (error) {
+        console.log(error);
+        res.send("request failed")
+    }
+
 }
 
 
