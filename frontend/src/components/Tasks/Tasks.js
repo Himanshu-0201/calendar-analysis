@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, userSingOut } from '../../features/userInfoSlice/userInfoSlice';
 import { calculateTotalTimeSpend, calPercentage, convertMinutesToHours, modifyEventsForTasksComponent } from '../../utils/mathUtils';
 import axios from 'axios';
-import { updateLoadingState } from '../../features/firstTimeLoaderSlice';
 
 // you can import data from here.
 
