@@ -10,7 +10,7 @@ const initialState = {
     events: events,
     currDate: currDate.toISOString(),
     isSignedIn: false,
-    allTimeSpend: "10 hr 15 min"
+    allTimeSpend: "10 hr 15 min",
 }
 
 
