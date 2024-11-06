@@ -93,6 +93,9 @@ const Calendar = () => {
                 <CustomDatePicker
                     handleDateChange={handleDateChange}
                     selectedDate={selectedDate}
+                    handleCloseDatePicker={() => {
+                        setDatePickerOpen(false);
+                    }}
                 />
             )}
         </div>

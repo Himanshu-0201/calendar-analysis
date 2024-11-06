@@ -2,13 +2,24 @@ import { useDispatch, useSelector } from "react-redux";
 import config from "../../../config";
 
 import { userSingOut } from "../../../features/userInfoSlice/userInfoSlice";
+import { useRef } from "react";
+import useOutSideClick from "../../../hooks/useOutSideClick";
 
 
 
-const DropDown = () => {
+const DropDown = ({ handleCloseDropDown }) => {
 
     const userName = useSelector(state => state.userInfo.name);
     const dispatch = useDispatch();
+    const dropDownRef = useRef(null);
+
+
+
+    useOutSideClick(dropDownRef, () => {
+        handleCloseDropDown();
+    });
+
+
 
     const signOutUser = async () => {
 
@@ -36,8 +47,12 @@ const DropDown = () => {
 
     }
 
+
+
     return (
-        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10"
+            ref={dropDownRef}
+        >
 
             <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
                 <div>{userName}</div>

@@ -13,6 +13,10 @@ const Avatar = () => {
         setIsOpen(pre => !pre);
     }
 
+    const handleCloseDropDown = () => {
+        setIsOpen(false);
+    }
+
 
     return (
         <>
@@ -25,7 +29,9 @@ const Avatar = () => {
                     <span className="font-medium text-gray-600 dark:text-gray-300">H</span>
                 </div>
 
-                {isOpen && (<DropDown />)}
+                {isOpen && (<DropDown
+                    handleCloseDropDown={handleCloseDropDown}
+                />)}
 
             </div>
         </>

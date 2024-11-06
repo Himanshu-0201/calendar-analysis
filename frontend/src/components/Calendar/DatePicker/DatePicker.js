@@ -6,14 +6,26 @@ import "react-datepicker/dist/react-datepicker.css"; // Date picker styles
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 import { isToday } from "../../../utils/dateUtils";
+import { useRef } from "react";
+import useOutSideClick from "../../../hooks/useOutSideClick";
 
 
-const CustomDatePicker = ({ selectedDate, handleDateChange }) => {
+const CustomDatePicker = ({ selectedDate, handleDateChange, handleCloseDatePicker }) => {
+
+    const customDatePickerRef = useRef(null);
+
+    useOutSideClick(customDatePickerRef, () => {
+        handleCloseDatePicker();
+    });
+
 
     return (
 
         <>
-            <div className="absolute z-10 mt-2 bg-white rounded-lg shadow-lg border border-gray-300">
+            <div className="absolute z-10 mt-2 bg-white rounded-lg shadow-lg border border-gray-300"
+
+                ref={customDatePickerRef}
+            >
                 <DatePicker
                     selected={selectedDate}
                     onChange={handleDateChange}
