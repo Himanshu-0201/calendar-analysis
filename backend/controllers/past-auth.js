@@ -114,6 +114,8 @@ export const succussfullySignIn = async (req, res) => {
             });
 
             const redirectUrl = REDIRECT_URI_ROOT;
+            
+            console.log("successful signed In");
             res.redirect(redirectUrl);
 
 
