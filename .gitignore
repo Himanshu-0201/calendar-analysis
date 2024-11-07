@@ -4,6 +4,7 @@
 
 #ignore .env file
 /backend/*.env
+/frontend/*.env
 
 #ignored credentials.json file
 /backend/credentials.json
