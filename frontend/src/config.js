@@ -2,7 +2,9 @@
 // config.js
 
 
-const BASE_URL = "http://localhost:8000"
+// const BASE_URL = "http://localhost:8000"
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const config = {
     BASE_URL: BASE_URL, // Base URL for your backend
