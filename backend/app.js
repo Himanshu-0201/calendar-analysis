@@ -13,8 +13,21 @@ import { HOST_PORT, mongoDBUrl } from './config.js';
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://google-calendar-analysis.onrender.com/"
+];
+
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      // Allow the request if the origin is in the allowedOrigins array or if there's no origin (for non-browser requests)
+      callback(null, true);
+    } else {
+      // Reject the request if the origin is not allowed
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET,POST,DELETE,PUT",
   credentials: true,
   exposedHeaders: 'Content-Disposition'
@@ -43,12 +56,12 @@ const port = HOST_PORT;
 
 
 mongoose.connect(mongoDBUrl)
-.then(()=>{
-    app.listen(port, ()=>{
-        console.log("server has activate st port : " + port);
+  .then(() => {
+    app.listen(port, () => {
+      console.log("server has activate st port : " + port);
     });
-})
-.catch(error => {
+  })
+  .catch(error => {
     console.log(error);
     console.log("unable to connect mongoDB server")
-});
+  });
