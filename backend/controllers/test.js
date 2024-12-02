@@ -112,6 +112,26 @@ export const testServer = (req, res) => {
 
 
 
+    setInterval(() => {
+
+
+        const now = new Date();
+
+        // Format the time components
+        const hours = now.getHours(); // Local hours (0-23)
+        const minutes = now.getMinutes(); // Local minutes (0-59)
+        const seconds = now.getSeconds(); // Local seconds (0-59)
+
+        // Format the time into a readable string
+        const localTime = `${hours.toString().padStart(2, '0')}:${minutes
+            .toString()
+            .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+
+        console.log("Time is ", localTime);
+
+    }, 5000)
+
 
 
     console.log("Himanshu");
