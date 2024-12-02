@@ -48,8 +48,8 @@ app.use(session({
 // 
 
 app.use(testRoute);
-app.use(authRoute);
-app.use(gCalendarRoute);
+// app.use(authRoute);
+// app.use(gCalendarRoute);
 
 
 const port = HOST_PORT;
