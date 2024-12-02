@@ -47,9 +47,30 @@ app.use(session({
 
 // 
 
+
+
 app.use(testRoute);
 // app.use(authRoute);
 // app.use(gCalendarRoute);
+setInterval(() => {
+
+
+  const now = new Date();
+
+  // Format the time components
+  const hours = now.getHours(); // Local hours (0-23)
+  const minutes = now.getMinutes(); // Local minutes (0-59)
+  const seconds = now.getSeconds(); // Local seconds (0-59)
+
+  // Format the time into a readable string
+  const localTime = `${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+
+  console.log("Time is ", localTime);
+
+}, 5000)
 
 
 const port = HOST_PORT;
