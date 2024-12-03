@@ -103,7 +103,7 @@ export const succussfullySignIn = async (req, res) => {
             const jwtToken = jwt.sign(
                 { email: userEmail }, // // Payload
                 process.env.JWT_SECRET, // Secret key
-                { expiresIn: '1h' } // Token expiration
+                { expiresIn: '7d' } // Token expiration
             );
 
 
