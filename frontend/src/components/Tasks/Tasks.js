@@ -41,6 +41,8 @@ const Tasks = ({firstTimeFetchComplete}) => {
                 const formattedDate = currDate.toISOString();
                 const url = `${config.eventsData}?date=${encodeURIComponent(formattedDate)}`;
 
+                console.log(url);
+
 
                 const response = await axios({
                     signal: controller.signal,
@@ -48,6 +50,9 @@ const Tasks = ({firstTimeFetchComplete}) => {
                     url: url,
                     withCredentials: true,
                 })
+
+
+                console.log(response);
 
 
                 if (response.status == 200) {
