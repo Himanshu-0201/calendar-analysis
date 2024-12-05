@@ -13,8 +13,6 @@ import { HOST_PORT, mongoDBUrl, allowedOrigins} from './config.js';
 
 const app = express();
 
-const allowedOrigins = allowedOrigins;
-
 app.use(cors({
   origin: (origin, callback) => {
     if (allowedOrigins.includes(origin) || !origin) {
