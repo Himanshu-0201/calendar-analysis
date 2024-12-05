@@ -6,6 +6,10 @@
 /backend/*.env
 /frontend/*.env
 
+#ignor versel directory in bacnkend
+
+/backend/.vercel
+
 #ignored credentials.json file
 /backend/credentials.json
 

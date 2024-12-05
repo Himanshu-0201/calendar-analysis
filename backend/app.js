@@ -57,11 +57,18 @@ const port = HOST_PORT;
 
 mongoose.connect(mongoDBUrl)
   .then(() => {
-    app.listen(port, () => {
-      console.log("server has activate st port : " + port);
-    });
+
+    // comment below code  in prod or run locally through versel
+
+    // app.listen(port, () => {
+    //   console.log("server has activate st port : " + port);
+    // });
+
   })
   .catch(error => {
     console.log(error);
     console.log("unable to connect mongoDB server")
   });
+
+
+export default app;
