@@ -70,5 +70,6 @@ mongoose.connect(mongoDBUrl)
     console.log("unable to connect mongoDB server")
   });
 
+console.log("hi, from app.js");
 
 export default app;
