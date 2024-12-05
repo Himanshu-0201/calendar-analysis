@@ -15,7 +15,8 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://google-calendar-analysis.onrender.com"
+  "https://google-calendar-analysis.onrender.com",
+ " https://google-calendar-analysis.vercel.app"
 ];
 
 app.use(cors({
