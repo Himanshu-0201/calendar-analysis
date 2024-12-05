@@ -9,15 +9,11 @@ import testRoute from "./routes/test-route.js";
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 
-import { HOST_PORT, mongoDBUrl } from './config.js';
+import { HOST_PORT, mongoDBUrl, allowedOrigins} from './config.js';
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://google-calendar-analysis.onrender.com",
-  "https://google-calendar-analysis.vercel.app"
-];
+const allowedOrigins = allowedOrigins;
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -71,6 +67,5 @@ mongoose.connect(mongoDBUrl)
     console.log("unable to connect mongoDB server")
   });
 
-console.log("hi, from app.js");
 
 export default app;

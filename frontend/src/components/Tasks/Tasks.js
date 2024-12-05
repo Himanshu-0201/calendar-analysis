@@ -41,8 +41,6 @@ const Tasks = ({firstTimeFetchComplete}) => {
                 const formattedDate = currDate.toISOString();
                 const url = `${config.eventsData}?date=${encodeURIComponent(formattedDate)}`;
 
-                console.log("you are in task.js");
-                console.log(url);
 
 
                 const response = await axios({
