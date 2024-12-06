@@ -48,6 +48,7 @@ const Tasks = ({firstTimeFetchComplete}) => {
                     method: "GET",
                     url: url,
                     withCredentials: true,
+                    timeout : 60000
                 })
 
 
@@ -60,7 +61,6 @@ const Tasks = ({firstTimeFetchComplete}) => {
                     const events = data.events;
 
                     dispatch(updateUser({ name: userName, events: events, currDate: currDateStr, allTimeSpend: calculatedAllTimeSpend }));
-                    firstTimeFetchComplete();  // if request success , then I need to close the loading state
 
                 }
                 else {
@@ -71,14 +71,14 @@ const Tasks = ({firstTimeFetchComplete}) => {
 
                 if (error.response && error.response.status === 401) {
                     dispatch(userSingOut());
-                    firstTimeFetchComplete();  // if request failed , then I need to close the loading state
                 }
-
-
+                
+                
                 
                 console.log("problem to fetch data, see Task.js");
             }
             finally {
+                firstTimeFetchComplete();  // if request failed , then I need to close the loading state
                 setLoading(false);
                 
             }
