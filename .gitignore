@@ -9,6 +9,8 @@
 #ignored credentials.json file
 /backend/credentials.json
 
+/backend/.vercel
+
 # Ignore other common files and directories
 npm-debug.log
 yarn-debug.log
