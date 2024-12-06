@@ -11,8 +11,7 @@ dotenv.config();
 
 
 
-
-export const succussfullySignIn = async (req, res) => {
+export const succussfullySignIn = async (req, res, next) => {
 
 
 
@@ -22,19 +21,33 @@ export const succussfullySignIn = async (req, res) => {
     const YOUR_REDIRECT_URL = REDIRECT_URI_SUCC_SIGN_IN;
 
 
-    const oauth2Client = new google.auth.OAuth2(
-        YOUR_CLIENT_ID,
-        YOUR_CLIENT_SECRET,
-        YOUR_REDIRECT_URL
-    );
 
+    let oauth2Client
+    try {
+
+
+        oauth2Client = new google.auth.OAuth2(
+            YOUR_CLIENT_ID,
+            YOUR_CLIENT_SECRET,
+            YOUR_REDIRECT_URL
+        );
+
+
+    } catch (err) {
+
+        const error = new Error("failed authentication with google");
+        error.status = 401;
+
+        return next(error);
+
+    }
 
     const { code } = req.query;
 
-
-
     if (!code) {
-        return res.redirect(FAILED_AUTH);
+        const error = new Error("failed authentication with google");
+        error.status = 401;
+        return next(error);
     }
 
 
@@ -42,7 +55,6 @@ export const succussfullySignIn = async (req, res) => {
 
         const { tokens } = await oauth2Client.getToken(code);
         oauth2Client.setCredentials(tokens);
-
 
         // Use the access token to get user information
         const userInfoResponse = await oauth2Client.request({
@@ -59,7 +71,6 @@ export const succussfullySignIn = async (req, res) => {
 
         const access_token = tokens.access_token;
         const refresh_token = tokens.refresh_token || "himanshu";
-
 
 
         try {
@@ -94,7 +105,7 @@ export const succussfullySignIn = async (req, res) => {
             }
 
         } catch (error) {
-            console.log(error);
+            next(error);
         }
 
 
@@ -121,12 +132,12 @@ export const succussfullySignIn = async (req, res) => {
 
 
         } catch (error) {
-            console.log("problem to crate jwt token");
+            // console.log("problem to crate jwt token");
+            return next(error);
         }
 
     } catch (error) {
-        console.error('Error retrieving user info:', error);
-        res.status(500).send('Error retrieving user info');
+        return next(error);
     }
 
 

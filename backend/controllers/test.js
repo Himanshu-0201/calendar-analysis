@@ -35,7 +35,7 @@ const eventsData = [{
 
 import User from "../models/User.js";
 
-export const testSingIn = async (req, res) => {
+export const testSingIn = async (req, res, next) => {
 
     const userName = "User name";
     const userEmail = "himanshu123@gmail.com";
@@ -63,9 +63,14 @@ export const testSingIn = async (req, res) => {
 
         res.send("user succussfully signed in");
 
-    } catch (error) {
-        console.error('Error storing user data:', error);
-        res.status(500).json({ message: 'Internal server error' });
+    } catch (err) {
+        // console.error('Error storing user data:', error);
+        // res.status(500).json({ message: 'Internal server error' });
+
+        const error = new Error(err);
+        error.status = 500;
+
+        return next(error);
     }
 
 
@@ -80,8 +85,6 @@ export const Test = async (req, res) => {
 
     const date = query.date;
     const currDate = new Date(date);
-
-    // console.log(currDate);
 
     res.send({ userName: userName, events: eventsData });
 
@@ -109,5 +112,5 @@ export const testSuccSignOut = (req, res) => {
 }
 
 export const testServer = (req, res) => {
-    res.send("Your server is running at port 3000");
+    res.send("Your server is running at port 8000");
 }

@@ -5,7 +5,7 @@ import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI_SUCC_SIGN_IN, scopes } from '../
 
 
 
-export const signInFun = async (req, res) => {
+export const signInFun = async (req, res, next) => {
 
 
     const YOUR_CLIENT_ID = CLIENT_ID;
@@ -23,10 +23,13 @@ export const signInFun = async (req, res) => {
             YOUR_REDIRECT_URL
         );
 
-    } catch (error) {
+    } catch (err) {
 
-        // handle error
-        console.log("failed to create clinet");
+        const error = new Error(err);
+        error.message = "invaild query parameter";
+        error.status = 401;
+        return next(error);
+
     }
 
 
@@ -45,9 +48,11 @@ export const signInFun = async (req, res) => {
 
         });
 
-    } catch (error) {
-        console.log("failed to create URL");
-
+    } catch (err) {
+        const error = new Error(err);
+        error.message = "invaild query parameter";
+        error.status = 401;
+        return next(error);
     }
 
 

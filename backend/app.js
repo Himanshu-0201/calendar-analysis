@@ -27,7 +27,7 @@ app.use(cors({
       callback(null, true);
     } else {
       // Reject the request if the origin is not allowed
-      const error = new Error("Your domain is not allowed for this request");
+      const error = new Error("You are not allowed to access this server");
       error.status = 403;
       callback(error);
     }
