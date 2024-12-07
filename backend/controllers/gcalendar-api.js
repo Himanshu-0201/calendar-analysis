@@ -60,150 +60,159 @@ const initializeOAuthClient = async (user_access_token) => {
 
 
 
-export const dayCalendarData = async (req, res) => {
+export const dayCalendarData = async (req, res, next) => {
 
 
     const userEmail = req.user.email;
 
 
-    const user = await User.findOne({ email: userEmail });
-    const access_token = user.accessToken;
-
-
-
-    const auth = await initializeOAuthClient(access_token);
-
-    // console.log(auth);
-    if (!auth) {
-        return res.json({ error: "google access token expired or something else" });
-    }
-
-
-    const calendar = google.calendar({ version: 'v3', auth });
-
-
-    // set code for the requested date
-    const date = req.query.date;
-
-
-    const currDateStartTime = !date ? new Date() : new Date(date);
-    currDateStartTime.setHours(0, 0, 0, 0);
-
-    const currDateEndTime = !date ? new Date() : new Date(date);
-    currDateEndTime.setHours(23, 59, 59, 999);
-
-
-
-    const startDayTime = currDateStartTime; //  set it according to user
-    const endDayTime = currDateEndTime; // set it according to user
-
-
-
     try {
 
-        const response = await calendar.events.list({
-            calendarId: 'primary', // you need to tell which calendar do you want to access, primary or secondary 
-            timeMin: startDayTime.toISOString(),
-            timeMax: endDayTime.toISOString(),
-            singleEvents: true,
-            orderBy: 'startTime',
-        });
+        const user = await User.findOne({ email: userEmail });
+        const access_token = user.accessToken;
 
-        const items = response.data.items;
+        const auth = await initializeOAuthClient(access_token);
 
-
-        const userEvents = items.map((item) => {
-
-            const title = item.summary;
-            const start = item.start.dateTime;
-            const end = item.end.dateTime;
-
-            return {
-                title: title,
-                start: start,
-                end: end
-            }
-        });
+        if (!auth) {
+            throw new Error("google access token expired or something else");
+        }
 
 
-        return res.json({ userName: user.username, events: userEvents });
+        const calendar = google.calendar({ version: 'v3', auth });
+
+        const date = req.query.date;
+
+
+        const currDateStartTime = !date ? new Date() : new Date(date);
+        currDateStartTime.setHours(0, 0, 0, 0);
+
+        const currDateEndTime = !date ? new Date() : new Date(date);
+        currDateEndTime.setHours(23, 59, 59, 999);
+
+
+
+        const startDayTime = currDateStartTime; //  set it according to user
+        const endDayTime = currDateEndTime; // set it according to user
+
+        try {
+
+            const response = await calendar.events.list({
+                calendarId: 'primary', // you need to tell which calendar do you want to access, primary or secondary 
+                timeMin: startDayTime.toISOString(),
+                timeMax: endDayTime.toISOString(),
+                singleEvents: true,
+                orderBy: 'startTime',
+            });
+
+            const items = response.data.items;
+
+
+            const userEvents = items.map((item) => {
+
+                const title = item.summary;
+                const start = item.start.dateTime;
+                const end = item.end.dateTime;
+
+                return {
+                    title: title,
+                    start: start,
+                    end: end
+                }
+            });
+
+
+            return res.json({ userName: user.username, events: userEvents });
+
+        } catch (err) {
+
+            throw new Error(err);
+        }
+
 
     } catch (error) {
-        console.log(error);
-        console.log("access denied or perameter missing !");
+        next(error);
     }
-
 
 }
 
-export const weekEventsCalendarData = async (req, res) => {
+export const weekEventsCalendarData = async (req, res, next) => {
 
-    // const userEmail = req.user.email;
     const userEmail = "nagar.himanshu.1802@gmail.com";  // extract it by request
-    const user = await User.findOne({ email: userEmail });
-    const access_token = user.accessToken;
-
-
-    const auth = await initializeOAuthClient(access_token);
-
-    if (!auth) {
-        return res.json({ error: "google access token expired or something else" });
-    }
-
-
-    const date = new Date() // extract it from the request
-
-    const dayOfWeek = date.getDay();
-
-    const startWeekDay = new Date(date);
-    startWeekDay.setDate(startWeekDay.getDate() - dayOfWeek + 1);
-
-    const endWeekDay = new Date(date);
-    endWeekDay.setDate(startWeekDay.getDate() + 6);
-
-    const startWeekTime = startWeekDay;
-    startWeekTime.setHours(0, 0, 0, 0);
-
-    const endWeekTime = endWeekDay;
-    endWeekTime.setHours(23, 59, 59, 999);
-
-
-    const calendar = google.calendar({ version: 'v3', auth });
 
 
     try {
 
-        const response = await calendar.events.list({
-            calendarId: 'primary', // you need to tell which calendar do you want to access, primary or secondary 
-            timeMin: startWeekTime.toISOString(),
-            timeMax: endWeekTime.toISOString(),
-            singleEvents: true,
-            orderBy: 'startTime',
-        });
 
-        const items = response.data.items;
+        const user = await User.findOne({ email: userEmail });
+        const access_token = user.accessToken;
 
-        const userEvents = items.map((item) => {
 
-            const title = item.summary;
-            const start = item.start.dateTime;
-            const end = item.end.dateTime;
+        const auth = await initializeOAuthClient(access_token);
 
-            return {
-                title: title,
-                start: start,
-                end: end
-            }
-        });
+        if (!auth) {
+            throw new Error("google access token expired or something else");
+        }
 
-        return res.json({ userName: user.username, events: userEvents });
+
+        const date = new Date() // extract it from the request
+
+        const dayOfWeek = date.getDay();
+
+        const startWeekDay = new Date(date);
+        startWeekDay.setDate(startWeekDay.getDate() - dayOfWeek + 1);
+
+        const endWeekDay = new Date(date);
+        endWeekDay.setDate(startWeekDay.getDate() + 6);
+
+        const startWeekTime = startWeekDay;
+        startWeekTime.setHours(0, 0, 0, 0);
+
+        const endWeekTime = endWeekDay;
+        endWeekTime.setHours(23, 59, 59, 999);
+
+
+        const calendar = google.calendar({ version: 'v3', auth });
+
+
+        try {
+
+            const response = await calendar.events.list({
+                calendarId: 'primary', // you need to tell which calendar do you want to access, primary or secondary 
+                timeMin: startWeekTime.toISOString(),
+                timeMax: endWeekTime.toISOString(),
+                singleEvents: true,
+                orderBy: 'startTime',
+            });
+
+            const items = response.data.items;
+
+            const userEvents = items.map((item) => {
+
+                const title = item.summary;
+                const start = item.start.dateTime;
+                const end = item.end.dateTime;
+
+                return {
+                    title: title,
+                    start: start,
+                    end: end
+                }
+            });
+
+            return res.json({ userName: user.username, events: userEvents });
+
+
+        } catch (error) {
+            throw new Error(error);
+        }
+
+
 
 
     } catch (error) {
-        console.log(error);
-        res.send("request failed")
+        next(error);
     }
-
+    
 }
 
 
