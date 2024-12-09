@@ -74,7 +74,9 @@ export const dayCalendarData = async (req, res, next) => {
         const auth = await initializeOAuthClient(access_token);
 
         if (!auth) {
-            throw new Error("google access token expired or something else");
+            const error = new Error("google access token expired or something else");
+            error.statusCode = 403;
+            throw error;
         }
 
 
@@ -124,8 +126,9 @@ export const dayCalendarData = async (req, res, next) => {
             return res.json({ userName: user.username, events: userEvents });
 
         } catch (err) {
-
-            throw new Error(err);
+            const error = new new Error(err);
+            error.statusCode = 403;
+            throw error;
         }
 
 
@@ -150,7 +153,9 @@ export const weekEventsCalendarData = async (req, res, next) => {
         const auth = await initializeOAuthClient(access_token);
 
         if (!auth) {
-            throw new Error("google access token expired or something else");
+            const error = new Error("google access token expired or something else");
+            error.statusCode = 403;
+            throw error;
         }
 
 
@@ -202,12 +207,11 @@ export const weekEventsCalendarData = async (req, res, next) => {
             return res.json({ userName: user.username, events: userEvents });
 
 
-        } catch (error) {
-            throw new Error(error);
+        } catch (err) {
+            const error = new Error(err);
+            error.statusCode = 403;
+            throw error;
         }
-
-
-
 
     } catch (error) {
         next(error);
