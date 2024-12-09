@@ -41,17 +41,6 @@ app.use(cors({
 // cookies parse
 app.use(cookieParser());
 
-// Session middleware setup
-app.use(session({
-  secret: 'your-secret-key',  // Replace with a strong, secret key
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }   // Set 'secure: true' in production when using HTTPS
-}));
-
-
-
-
 app.use(testRoute);
 app.use(authRoute);
 app.use(gCalendarRoute);
