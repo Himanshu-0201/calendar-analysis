@@ -43,7 +43,7 @@ export const REDIRECT_URI_LOCAL = 'http://localhost'
 
 // also place these uri in .env file
 export const scopes = [
-    'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/calendar'];
+    'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/calendar.readonly'];
 
 
 export const allowedOrigins = [
