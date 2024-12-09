@@ -110,7 +110,7 @@ export const succussfullySignIn = async (req, res) => {
             res.cookie('token', jwtToken, {
                 httpOnly: true, // Makes cookie inaccessible via JavaScript
                 secure: process.env.NODE_ENV === 'production', // Secure flag for HTTPS
-                maxAge: 60 * 60 * 1000, // 1 hour expiry,
+                maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day expiry,
                 sameSite: process.env.NODE_ENV === 'production' ? 'None' : "Lax"     // Allow cross-origin cookies
             });
 
