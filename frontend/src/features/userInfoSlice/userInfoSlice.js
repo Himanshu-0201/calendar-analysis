@@ -10,7 +10,8 @@ const initialState = {
     events: events,
     currDate: currDate.toISOString(),
     isSignedIn: false,
-    allTimeSpend: "10 hr 15 min",
+    eventsShowTillCurrentTime : false,
+   
 }
 
 
@@ -22,10 +23,10 @@ export const userInfoSlice = createSlice({
 
         updateUser: (state, action) => {
 
-            const { name, events, currDate, allTimeSpend } = action.payload;
+            const { name, events, currDate , eventsShowTillCurrentTime} = action.payload;
 
             return {
-                name, events, currDate, allTimeSpend, isSignedIn : true
+                name, events, currDate,  eventsShowTillCurrentTime, isSignedIn : true
             }
         },
 
@@ -39,12 +40,15 @@ export const userInfoSlice = createSlice({
 
         userSingOut: (state) => {
             return initialState;
+        },
+        updateEventsShowTillCurrentTime : (state, action) => {
+            state.eventsShowTillCurrentTime = action.payload.eventsShowTillCurrentTime;
         }
     }
 });
 
 
-export const { unpdateEvents, updateCurrDate, updateUser, userSingOut } = userInfoSlice.actions;
+export const { unpdateEvents, updateCurrDate, updateUser, userSingOut, updateEventsShowTillCurrentTime } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;
 

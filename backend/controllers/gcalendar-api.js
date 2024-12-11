@@ -126,7 +126,7 @@ export const dayCalendarData = async (req, res, next) => {
             return res.json({ userName: user.username, events: userEvents });
 
         } catch (err) {
-            const error = new new Error(err);
+            const error = new Error(err);
             error.statusCode = 403;
             throw error;
         }
