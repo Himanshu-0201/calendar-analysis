@@ -3,7 +3,7 @@ import { events } from "../data/eventsData";
 
 export const convertMinutesToHours = (minutes) => {
     const hours = Math.floor(minutes / 60); // Calculate full hours
-    const remainingMinutes = minutes % 60;   // Calculate remaining minutes
+    const remainingMinutes = Math.floor(minutes % 60);   // Calculate remaining minutes
 
     // Return the result in the desired format
     return `${hours} Hr ${remainingMinutes} Min`;
