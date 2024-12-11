@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, userSingOut } from '../../features/userInfoSlice/userInfoSlice';
 import { calculateTotalTimeSpend, calPercentage, convertMinutesToHours, modifyEventsForTasksComponent } from '../../utils/mathUtils';
 import axios from 'axios';
+import Cookies from "js-cookie";
 
 // you can import data from here.
 
@@ -59,6 +60,15 @@ const Tasks = ({firstTimeFetchComplete}) => {
 
                     const userName = data.userName;
                     const events = data.events;
+
+                    const eventsShowTillCurrentTimeFromCookie = Cookies.get("eventsShowTillCurrentTime") || "false";
+
+                    let eventsShowTillCurrentTime =  false
+
+                    if(eventsShowTillCurrentTimeFromCookie && eventsShowTillCurrentTimeFromCookie === "true"){
+                        eventsShowTillCurrentTime = true;
+                    }
+
 
                     dispatch(updateUser({ name: userName, events: events, currDate: currDateStr, eventsShowTillCurrentTime }));
 

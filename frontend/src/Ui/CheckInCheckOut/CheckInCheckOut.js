@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
 import { updateEventsShowTillCurrentTime } from "../../features/userInfoSlice/userInfoSlice.js";
 
@@ -11,6 +12,7 @@ const CheckInCheckOut = () => {
 
 
     const handleChange = () => {
+        Cookies.set("eventsShowTillCurrentTime", !eventsShowTillCurrentTime, { expires: 7});
         dispatch(updateEventsShowTillCurrentTime({eventsShowTillCurrentTime : !eventsShowTillCurrentTime}));
     }
 
