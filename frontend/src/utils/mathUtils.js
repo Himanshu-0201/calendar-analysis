@@ -3,7 +3,7 @@ import { events } from "../data/eventsData";
 
 export const convertMinutesToHours = (minutes) => {
     const hours = Math.floor(minutes / 60); // Calculate full hours
-    const remainingMinutes = minutes % 60;   // Calculate remaining minutes
+    const remainingMinutes = Math.floor(minutes % 60);   // Calculate remaining minutes
 
     // Return the result in the desired format
     return `${hours} Hr ${remainingMinutes} Min`;
@@ -20,13 +20,20 @@ export const calPercentage = (part, total) => {
 
 
 // this is for cal time only
-export const calculateTotalTimeSpend = (events) => {
+export const calculateTotalTimeSpend = (events, eventsShowTillCurrentTime) => {
 
     let totalTime = 0;
 
     events.forEach(event => {
-        const startTime = new Date(event.start);
-        const endTime = new Date(event.end);
+        let startTime = new Date(event.start);
+        let endTime = new Date(event.end);
+
+        if (eventsShowTillCurrentTime) {
+            const currTime = new Date();
+            startTime = new Date(Math.min(startTime, currTime));
+            endTime = new Date(Math.min(endTime, currTime));
+        }
+
         const duration = (endTime - startTime) / 1000 / 60; // duration in minutes
         totalTime += duration;
     });
@@ -34,13 +41,42 @@ export const calculateTotalTimeSpend = (events) => {
     return totalTime;
 }
 
-export const modifyEventsForTasksComponent = (userEvents) => {
+export const modifyEventsForTasksComponent = (userEvents, eventsShowTillCurrentTime) => {
 
-    const calculatedAllTimeSpend = calculateTotalTimeSpend(userEvents);
+
+    let updatedUserEvents = [];
+
+    if (eventsShowTillCurrentTime) {
+
+        const currTime = new Date();
+
+        userEvents.forEach(event => {
+
+            const endTime = new Date(event.end);
+            const startTime = new Date(event.start);
+
+            const end = new Date(Math.min(endTime, currTime)).toISOString();
+            const start = new Date(Math.min(startTime, currTime)).toISOString();
+
+            if (start != end) {
+                updatedUserEvents.push({
+                    ...event,
+                    start,
+                    end
+                })
+            }
+
+        })
+    }
+    else {
+        updatedUserEvents = userEvents;
+    }
+
+    const calculatedAllTimeSpend = calculateTotalTimeSpend(updatedUserEvents, eventsShowTillCurrentTime);
 
     const eventsArray = [];
 
-    userEvents.forEach(event => {
+    updatedUserEvents.forEach(event => {
 
         const startTime = new Date(event.start);
         const endTime = new Date(event.end);

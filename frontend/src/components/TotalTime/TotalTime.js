@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux";
 import "./TotalTime.scss";
-import { convertMinutesToHours } from "../../utils/mathUtils";
+import { calculateTotalTimeSpend, convertMinutesToHours } from "../../utils/mathUtils";
 
 const TotalTime = ()=>{
 
-    const totalTimeSpendInMin = useSelector(state => state.userInfo.allTimeSpend);
+    const events = useSelector(state => state.userInfo.events);
+    const eventsShowTillCurrentTime = useSelector(state => state.userInfo.eventsShowTillCurrentTime);
+    const totalTimeSpendInMin = calculateTotalTimeSpend(events, eventsShowTillCurrentTime);
     const totalTimeSpend = convertMinutesToHours(totalTimeSpendInMin);
+
 
     const isSignedIn = useSelector(state => state.userInfo.isSignedIn);
 

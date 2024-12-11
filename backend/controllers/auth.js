@@ -27,7 +27,7 @@ export const signInFun = async (req, res, next) => {
 
         const error = new Error(err);
         error.message = "invaild query parameter";
-        error.status = 401;
+        error.status = 403;
         return next(error);
 
     }
@@ -51,7 +51,7 @@ export const signInFun = async (req, res, next) => {
     } catch (err) {
         const error = new Error(err);
         error.message = "invaild query parameter";
-        error.status = 401;
+        error.status = 403;
         return next(error);
     }
 

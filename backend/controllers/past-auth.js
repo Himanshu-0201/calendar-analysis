@@ -36,7 +36,7 @@ export const succussfullySignIn = async (req, res, next) => {
     } catch (err) {
 
         const error = new Error("failed authentication with google");
-        error.status = 401;
+        error.status = 403;
 
         return next(error);
 
@@ -46,7 +46,7 @@ export const succussfullySignIn = async (req, res, next) => {
 
     if (!code) {
         const error = new Error("failed authentication with google");
-        error.status = 401;
+        error.status = 403;
         return next(error);
     }
 
