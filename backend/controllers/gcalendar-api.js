@@ -9,6 +9,7 @@ import { cwd } from 'process';
 import User from "../models/User.js";
 
 import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI_SUCC_SIGN_IN } from "../config.js";
+import { isTimeStringUTC } from "../utils/TimeUtil.js";
 
 
 const CREDENTIALS_PATH = join(cwd(), 'credentials.json');
@@ -82,26 +83,32 @@ export const dayCalendarData = async (req, res, next) => {
 
         const calendar = google.calendar({ version: 'v3', auth });
 
-        const date = req.query.date;
+        const start = req.query.start;
+        const end = req.query.end;
+
+        if(!end || !start){
+            const error = new Error("start or end are missing");
+            error.status = 400;
+            throw error;
+        }
+
+        if(isTimeStringUTC(start) === false || isTimeStringUTC(end) === false){
+            const error = new Error("start or end time zone is not in UTC formate");
+            error.status = 422;
+            throw error;
+        }
 
 
-        const currDateStartTime = !date ? new Date() : new Date(date);
-        currDateStartTime.setHours(0, 0, 0, 0);
+        const startTime = new Date(start);
+        const endTime = new Date(end);
 
-        const currDateEndTime = !date ? new Date() : new Date(date);
-        currDateEndTime.setHours(23, 59, 59, 999);
-
-
-
-        const startDayTime = currDateStartTime; //  set it according to user
-        const endDayTime = currDateEndTime; // set it according to user
 
         try {
 
             const response = await calendar.events.list({
                 calendarId: 'primary', // you need to tell which calendar do you want to access, primary or secondary 
-                timeMin: startDayTime.toISOString(),
-                timeMax: endDayTime.toISOString(),
+                timeMin: startTime.toISOString(),
+                timeMax: endTime.toISOString(),
                 singleEvents: true,
                 orderBy: 'startTime',
             });

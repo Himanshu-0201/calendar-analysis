@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 
 
 
-const Tasks = ({firstTimeFetchComplete}) => {
+const Tasks = ({ firstTimeFetchComplete }) => {
 
     const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,6 @@ const Tasks = ({firstTimeFetchComplete}) => {
     const events = modifyEventsForTasksComponent(eventsList, eventsShowTillCurrentTime);
 
 
-    const currDate = new Date(currDateStr);
     const dispatch = useDispatch();
 
 
@@ -42,9 +41,22 @@ const Tasks = ({firstTimeFetchComplete}) => {
 
             try {
 
-                const formattedDate = currDate.toISOString();
-                const url = `${config.eventsData}?date=${encodeURIComponent(formattedDate)}`;
+                // Parse the date string to create a Date object
+                const startTime = new Date(currDateStr);
 
+
+                // Set to local time zone with 0 hr, 0 min, 0 sec, and 0 ms
+                startTime.setHours(0, 0, 0, 0);
+
+                const endTime = new Date(currDateStr);
+
+                // Set to local time zone with 23 hr, 59 min, 59 sec, and  999ms
+                endTime.setHours(23, 59, 59, 999);
+
+                const startStr = startTime.toISOString();
+                const endStr = endTime.toISOString();
+
+                const url = `${config.eventsData}?start=${encodeURIComponent(startStr)}&end=${encodeURIComponent(endStr)}`;
 
 
                 const response = await axios({
@@ -52,7 +64,7 @@ const Tasks = ({firstTimeFetchComplete}) => {
                     method: "GET",
                     url: url,
                     withCredentials: true,
-                    timeout : 60000
+                    timeout: 60000
                 })
 
 
@@ -64,9 +76,9 @@ const Tasks = ({firstTimeFetchComplete}) => {
 
                     const eventsShowTillCurrentTimeFromCookie = Cookies.get("eventsShowTillCurrentTime") || "false";
 
-                    let eventsShowTillCurrentTime =  false
+                    let eventsShowTillCurrentTime = false
 
-                    if(eventsShowTillCurrentTimeFromCookie && eventsShowTillCurrentTimeFromCookie === "true"){
+                    if (eventsShowTillCurrentTimeFromCookie && eventsShowTillCurrentTimeFromCookie === "true") {
                         eventsShowTillCurrentTime = true;
                     }
 
@@ -83,15 +95,15 @@ const Tasks = ({firstTimeFetchComplete}) => {
                 if (error.response && error.response.status === 401) {
                     dispatch(userSingOut());
                 }
-                
-                
-                
+
+
+
                 console.log("problem to fetch data, see Task.js");
             }
             finally {
                 firstTimeFetchComplete();  // if request failed , then I need to close the loading state
                 setLoading(false);
-                
+
             }
 
 
@@ -108,7 +120,7 @@ const Tasks = ({firstTimeFetchComplete}) => {
 
     }, [currDateStr]);
 
-    
+
 
 
     const tableEventsData = events ? events : [];
