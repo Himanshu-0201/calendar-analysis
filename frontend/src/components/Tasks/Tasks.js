@@ -148,7 +148,7 @@ const Tasks = ({ firstTimeFetchComplete }) => {
                     <table className="min-w-full border-collapse border border-slate-400 _table">
                         <thead>
                             <tr className="bg-gray-100">
-                                <th className="border border-slate-300 text-center p-4">Task</th>
+                                <th className="border border-slate-300 text-center p-4">Activity</th>
                                 <th className="border border-slate-300 text-center p-4">Duration</th>
                                 <th className="border border-slate-300 text-center p-4">Percentage</th>
                             </tr>
