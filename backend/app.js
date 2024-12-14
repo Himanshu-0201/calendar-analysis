@@ -52,9 +52,9 @@ mongoose.connect(mongoDBUrl)
 
     // comment below code  in prod or run locally through versel
 
-    // app.listen(port, () => {
-    //   console.log("server has activate st port : " + port);
-    // });
+    app.listen(port, () => {
+      console.log("server has activate st port : " + port);
+    });
 
   })
   .catch(error => {
@@ -69,4 +69,4 @@ mongoose.connect(mongoDBUrl)
   });
 
 
-export default app;
+// export default app;
