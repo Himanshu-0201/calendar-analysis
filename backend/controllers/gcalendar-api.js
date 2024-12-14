@@ -1,62 +1,8 @@
-
-
 import { google } from "googleapis";
-
-const calendar = google.calendar("v3");
-
-import { join } from 'path';
-import { cwd } from 'process';
 import User from "../models/User.js";
-
-import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI_SUCC_SIGN_IN } from "../config.js";
-import { isTimeStringUTC } from "../utils/TimeUtil.js";
-
-
-const CREDENTIALS_PATH = join(cwd(), 'credentials.json');
-
-
-const initializeOAuthClient = async (user_access_token) => {
-
-
-    const client_id = CLIENT_ID;
-    const client_secret = CLIENT_SECRET;
-    const succ_sign_in_url = REDIRECT_URI_SUCC_SIGN_IN;
-
-
-    // Initialize OAuth2 client with the loaded credentials
-    const oauth2Client = new google.auth.OAuth2(
-        client_id,
-        client_secret,
-        succ_sign_in_url
-    );
-
-
-    // Load token from tokens.json
-    let access_token = user_access_token;
-
-    if (!access_token) return false;
-
-
-    try {
-
-
-        // Set OAuth2 credentials
-        oauth2Client.setCredentials({
-            access_token: access_token,
-            // refresh_token: refresh_token,
-            // expiry_date: token.expiry_date
-        });
-
-
-    } catch (error) {
-        console.error('Error reading token:', err);
-        throw new Error('Token not found or invalid');
-    }
-
-
-
-    return oauth2Client;
-};
+import { isTimeStringUTC } from "../utils/time-util.js";
+import { initializeOAuthClient } from "../utils/google-api-util.js";
+import { getAcessTokenFromRefreshToken } from "../utils/google-api-util.js";
 
 
 
@@ -70,9 +16,18 @@ export const dayCalendarData = async (req, res, next) => {
     try {
 
         const user = await User.findOne({ email: userEmail });
-        const access_token = user.accessToken;
+        let access_token = user.accessToken;
+        const refresh_token = user.refreshToken;
 
         const auth = await initializeOAuthClient(access_token);
+
+        // when access token expire, it generate new token and save it in the data base
+        if(auth.isTokenExpiring() === true){
+            const response = await getAcessTokenFromRefreshToken(refresh_token);
+            const new_refresh_token = response.access_token;
+            access_token = new_refresh_token;
+            const updatedUser = await User.updateOne({email : userEmail}, {$set : {accessToken : new_refresh_token}});
+        }
 
         if (!auth) {
             const error = new Error("google access token expired or something else");

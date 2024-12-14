@@ -70,7 +70,7 @@ export const succussfullySignIn = async (req, res, next) => {
         const userName = userInfo.name;
 
         const access_token = tokens.access_token;
-        const refresh_token = tokens.refresh_token || "himanshu";
+        const refresh_token = tokens.refresh_token || "refresh token not availble";
 
 
         try {

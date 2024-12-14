@@ -51,3 +51,7 @@ export const allowedOrigins = [
     "https://google-calendar-analysis.onrender.com",
     "https://google-calendar-analysis.vercel.app"
 ];
+
+// to generate access token
+
+export const google_access_token_gererate_uri = "https://oauth2.googleapis.com/token";

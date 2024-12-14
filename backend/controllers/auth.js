@@ -45,6 +45,7 @@ export const signInFun = async (req, res, next) => {
             scope: scopes,
             // Enable incremental authorization. Recommended as a best practice.
             include_granted_scopes: true,
+            prompt: 'consent', // Forces the consent screen to show
 
         });
 
