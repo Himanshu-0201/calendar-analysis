@@ -73,6 +73,7 @@ export const signOutFun = (req, res) => {
         path: '/',                       // Explicitly match root path
         httpOnly: true,                  // Matches `httpOnly` setting
         secure: process.env.NODE_ENV === 'production', // Match secure flag in production
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : "Lax"    
     });
 
     res.status(200).send({ message: 'Successfully signed out.' });
