@@ -18,16 +18,29 @@ export const dayCalendarData = async (req, res, next) => {
         const user = await User.findOne({ email: userEmail });
         let access_token = user.accessToken;
         const refresh_token = user.refreshToken;
+        const expiry_date = user.expireDate;
 
-        const auth = await initializeOAuthClient(access_token);
+
+        let auth = await initializeOAuthClient(access_token, refresh_token, expiry_date);
+
+
 
         // when access token expire, it generate new token and save it in the data base
-        if(auth.isTokenExpiring() === true){
+
+        if (auth.isTokenExpiring() === true) {
+
             const response = await getAcessTokenFromRefreshToken(refresh_token);
-            const new_refresh_token = response.access_token;
-            access_token = new_refresh_token;
-            const updatedUser = await User.updateOne({email : userEmail}, {$set : {accessToken : new_refresh_token}});
+            const new_access_token = response.data.access_token;
+            access_token = new_access_token;
+            const curr_time = Date.now();
+            const expiresIn = response.data.expires_in;
+            const new_expire_date = curr_time + expiresIn;
+            const updatedUser = await User.updateMany({ email: userEmail }, { $set: { accessToken: new_access_token, expireDate: new_expire_date } });
+
+            auth = await initializeOAuthClient(new_access_token, refresh_token, new_expire_date);
+
         }
+
 
         if (!auth) {
             const error = new Error("google access token expired or something else");
@@ -41,13 +54,13 @@ export const dayCalendarData = async (req, res, next) => {
         const start = req.query.start;
         const end = req.query.end;
 
-        if(!end || !start){
+        if (!end || !start) {
             const error = new Error("start or end are missing");
             error.status = 400;
             throw error;
         }
 
-        if(isTimeStringUTC(start) === false || isTimeStringUTC(end) === false){
+        if (isTimeStringUTC(start) === false || isTimeStringUTC(end) === false) {
             const error = new Error("start or end time zone is not in UTC formate");
             error.status = 422;
             throw error;
@@ -88,6 +101,8 @@ export const dayCalendarData = async (req, res, next) => {
             return res.json({ userName: user.username, events: userEvents });
 
         } catch (err) {
+
+            console.log(err);
             const error = new Error(err);
             error.statusCode = 403;
             throw error;
@@ -178,7 +193,7 @@ export const weekEventsCalendarData = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-    
+
 }
 
 

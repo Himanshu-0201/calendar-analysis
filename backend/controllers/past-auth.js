@@ -71,7 +71,7 @@ export const succussfullySignIn = async (req, res, next) => {
 
         const access_token = tokens.access_token;
         const refresh_token = tokens.refresh_token || "refresh token not availble";
-
+        const expiry_date = tokens.expiry_date;
 
         try {
 
@@ -83,7 +83,8 @@ export const succussfullySignIn = async (req, res, next) => {
                     username: userName,
                     email: userEmail,
                     accessToken: access_token,
-                    refreshToken: refresh_token
+                    refreshToken: refresh_token,
+                    expireDate : expiry_date
                 })
 
                 const respons = await user.save();
@@ -95,7 +96,8 @@ export const succussfullySignIn = async (req, res, next) => {
                     {
                         $set: {
                             accessToken: access_token,
-                            refreshToken: refresh_token
+                            refreshToken: refresh_token,
+                            expireDate : expiry_date
                         }
                     },
                     { new: true }

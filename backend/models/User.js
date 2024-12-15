@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true, // Make this required as you want to store it
     },
+    expireDate : {
+        type : String,
+        require : true
+    }
 }, { timestamps: true }); // Automatically creates createdAt and updatedAt fields
 
 const User = mongoose.model('User', userSchema);

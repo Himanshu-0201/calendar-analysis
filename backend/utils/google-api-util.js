@@ -5,7 +5,7 @@ import { google } from "googleapis";
 import axios from "axios";
 
 
-export const initializeOAuthClient = async (user_access_token) => {
+export const initializeOAuthClient = async (user_access_token, refresh_token, expiry_in) => {
 
 
     const client_id = CLIENT_ID;
@@ -24,16 +24,20 @@ export const initializeOAuthClient = async (user_access_token) => {
     // Load token from tokens.json
     let access_token = user_access_token;
 
-    if (!access_token) return false;
+    if (!access_token) {
+        throw new Error('Token not found or invalid');
+    }
 
 
     try {
 
+        const expiry_date = expiry_in;
 
         // Set OAuth2 credentials
         oauth2Client.setCredentials({
             access_token: access_token,
-            // refresh_token: refresh_token,
+            expiry_date: expiry_in,
+            refresh_token: refresh_token,
             // expiry_date: token.expiry_date
         });
 
@@ -65,7 +69,7 @@ export const getAcessTokenFromRefreshToken = async (refresh_token) => {
         return response;
 
     } catch (error) {
-        throw  error;
+        throw error;
     }
 
 }
