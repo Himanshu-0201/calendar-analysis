@@ -5,6 +5,8 @@ import { userSingOut } from "../../../features/userInfoSlice/userInfoSlice";
 import { useRef } from "react";
 import useOutSideClick from "../../../hooks/useOutSideClick";
 
+import "./DropDown.scss"
+
 
 
 const DropDown = ({ handleCloseDropDown }) => {
@@ -54,7 +56,7 @@ const DropDown = ({ handleCloseDropDown }) => {
             ref={dropDownRef}
         >
 
-            <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+            <div className=" _color px-4 py-3 text-sm text-gray-900 dark:text-white">
                 <div>{userName}</div>
                 {/* you can put email here */}
             </div>
@@ -72,7 +74,7 @@ const DropDown = ({ handleCloseDropDown }) => {
             </ul>
 
             <div className="py-2 border-t border-gray-200">
-                <button className="inline-flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                <button className=" _color inline-flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     onClick={signOutUser}
                 >
                     Sign out
