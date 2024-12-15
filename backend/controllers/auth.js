@@ -72,7 +72,7 @@ export const signOutFun = (req, res) => {
     res.clearCookie('token', {
         path: '/',                       // Explicitly match root path
         httpOnly: true,                  // Matches `httpOnly` setting
-        // secure: process.env.NODE_ENV === 'production', // Match secure flag in production
+        secure: process.env.NODE_ENV === 'production', // Match secure flag in production
     });
 
     res.status(200).send({ message: 'Successfully signed out.' });
