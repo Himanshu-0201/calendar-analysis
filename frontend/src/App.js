@@ -8,12 +8,14 @@ import {
 import DeniedAccess from "./components/DeniedAccess/DeniedAccess";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
 import ErrorComponent from "./Errors/Error";
+import ErrorProvider from "./Context/ErrorProvider";
+import RootLayOut from "./RootLayOut/RootLayOut";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    errorElement : <ErrorComponent />, 
+    element: <RootLayOut />,
     children: [
       {
         index: true,
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
         path: "access-denied",
         element: <DeniedAccess />
       },
+      {
+        path : "error",
+        element : <ErrorComponent />
+      }
     ]
   },
   {

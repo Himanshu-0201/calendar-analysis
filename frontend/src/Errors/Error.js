@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 
-function Error({ error }) {
+import { ErrorContext } from "../Context/ErrorContext";
+
+
+function Error() {
+
+    const {error} = useContext(ErrorContext);
+
+    console.log(error);
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="text-center bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
