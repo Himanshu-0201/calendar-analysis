@@ -1,13 +1,20 @@
 import React, { useContext } from "react";
 
 import { ErrorContext } from "../Context/ErrorContext";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 
 function Error() {
 
     const {error} = useContext(ErrorContext);
 
-    console.log(error);
+    const navigate = useNavigate();
+
+    const handleClick = ()=>{
+        navigate("/");
+    }
+
+    // console.log(error);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -23,7 +30,7 @@ function Error() {
                 )}
                 <button
                     className="bg-blue-600 hover:bg-blue-500 transition-colors px-6 py-2 text-white text-sm font-semibold rounded-lg"
-                    onClick={() => window.location.reload()}
+                    onClick={handleClick}
                 >
                     Refresh Page
                 </button>

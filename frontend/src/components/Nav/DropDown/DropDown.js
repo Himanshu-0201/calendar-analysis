@@ -6,11 +6,14 @@ import { useRef } from "react";
 import useOutSideClick from "../../../hooks/useOutSideClick";
 
 import "./DropDown.scss"
+import { useError } from "../../../hooks/useError";
 
 
 
 const DropDown = ({ handleCloseDropDown }) => {
 
+
+    const { throwError } = useError();
     const userName = useSelector(state => state.userInfo.name);
     const dispatch = useDispatch();
     const dropDownRef = useRef(null);
@@ -40,11 +43,11 @@ const DropDown = ({ handleCloseDropDown }) => {
                 dispatch(userSingOut());
             }
             else {
-                console.log("failed to signout in");
+                throw new Error("something went wrong");
             }
 
         } catch (error) {
-
+           throwError(error);
         }
 
     }
