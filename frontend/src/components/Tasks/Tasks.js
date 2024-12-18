@@ -100,7 +100,7 @@ const Tasks = ({ firstTimeFetchComplete }) => {
                 if (error.response && error.response.status === 401) {
                     dispatch(userSingOut());
                 }
-                else{
+                else {
                     throwError(error);
                 }
 
@@ -155,7 +155,9 @@ const Tasks = ({ firstTimeFetchComplete }) => {
                             <tr className="bg-gray-100">
                                 <th className="border border-slate-300 text-center p-4">Activity</th>
                                 <th className="border border-slate-300 text-center p-4">Duration</th>
-                                <th className="border border-slate-300 text-center p-4">Percentage</th>
+                                <th className="border border-slate-300 text-center p-4">Percentage
+                                    <span className='block !text-xs font-normal'>( % total register time)</span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
