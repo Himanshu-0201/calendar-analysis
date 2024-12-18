@@ -8,6 +8,8 @@ import { updateUser, userSingOut } from '../../features/userInfoSlice/userInfoSl
 import { calculateTotalTimeSpend, calPercentage, convertMinutesToHours, modifyEventsForTasksComponent } from '../../utils/mathUtils';
 import axios from 'axios';
 import Cookies from "js-cookie";
+import { useError } from '../../hooks/useError';
+import { useNavigate } from 'react-router-dom';
 
 // you can import data from here.
 
@@ -16,6 +18,7 @@ import Cookies from "js-cookie";
 const Tasks = ({ firstTimeFetchComplete }) => {
 
     const [loading, setLoading] = useState(true);
+    const { throwError } = useError();
 
 
     const currDateStr = useSelector(state => state.userInfo.currDate)
@@ -67,6 +70,8 @@ const Tasks = ({ firstTimeFetchComplete }) => {
                     timeout: 60000
                 })
 
+                // console.log("response " + response);
+
 
                 if (response.status == 200) {
                     const data = response.data;
@@ -95,10 +100,10 @@ const Tasks = ({ firstTimeFetchComplete }) => {
                 if (error.response && error.response.status === 401) {
                     dispatch(userSingOut());
                 }
+                else{
+                    throwError(error);
+                }
 
-
-
-                console.log("problem to fetch data, see Task.js");
             }
             finally {
                 firstTimeFetchComplete();  // if request failed , then I need to close the loading state

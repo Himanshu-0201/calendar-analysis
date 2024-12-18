@@ -23,7 +23,6 @@ const Nav = () => {
                             <CheckInCheckOut />
                         </div>
 
-
                         <Avatar />
                     </>
 
