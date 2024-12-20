@@ -4,7 +4,7 @@ import Calendar from "../Calendar/Calendar";
 import TotalTime from "../TotalTime/TotalTime";
 import "./Timezone.scss";
 
-const SelectTime = () => {
+const Timezone = () => {
 
     
 
@@ -18,4 +18,4 @@ const SelectTime = () => {
     )
 }
 
-export default SelectTime;
+export default Timezone;

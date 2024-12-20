@@ -10,6 +10,8 @@ import PageNotFound from "./components/PageNotFound/PageNotFound";
 import ErrorComponent from "./Errors/Error";
 import ErrorProvider from "./Context/ErrorProvider";
 import RootLayOut from "./RootLayOut/RootLayOut";
+import Table from "./components/Table/Table";
+import DayEvents from "./components/DayEvents/DayEvents";
 
 
 const router = createBrowserRouter([
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <LayOut />
+        element: <DayEvents />
       },
       {
         path: "access-denied",
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
       {
         path : "error",
         element : <ErrorComponent />
+      },
+      {
+        path : "table",
+        element : <Table />
       }
     ]
   },
