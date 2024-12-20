@@ -12,6 +12,7 @@ import ErrorProvider from "./Context/ErrorProvider";
 import RootLayOut from "./RootLayOut/RootLayOut";
 import Table from "./components/Table/Table";
 import DayEvents from "./components/DayEvents/DayEvents";
+import AllEvents from "./components/AllEvents/AllEvents";
 
 
 const router = createBrowserRouter([
@@ -32,8 +33,8 @@ const router = createBrowserRouter([
         element : <ErrorComponent />
       },
       {
-        path : "table",
-        element : <Table />
+        path : "all-events",
+        element : <AllEvents />
       }
     ]
   },
