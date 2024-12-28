@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import gCalendarRoute from './routes/gcalendar-api.js';
 import authRoute from "./routes/auth-route.js";
 import testRoute from "./routes/test-route.js";
+import emailRoute from "./routes/email-route.js";
 
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
@@ -39,6 +40,7 @@ app.use(cookieParser());
 app.use(testRoute);
 app.use(authRoute);
 app.use(gCalendarRoute);
+app.use(emailRoute);
 
 // handle error for cors
 app.use(handleError);
