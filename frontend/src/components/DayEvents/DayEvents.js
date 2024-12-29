@@ -1,19 +1,18 @@
 import { useState } from "react";
 
 import LayOut from "../LayOut/LayOut";
-import Tasks from "../Tasks/Tasks";
 import Nav from "../Nav/Nav";
 import Timezone from "../Timezone/Timezone";
 import Loader from "../Loader/Loader";
-
+import DayEventsBody from "./DayEventsBody/DayEventsBody";
 
 const DayEvents = () => {
 
 
     const [isLoading, setIsLoading] = useState(true);
 
-
-    const handleFirstTimeFetchComplete = (event) => {
+    
+    const hanndleLoaderClose = (event) => {
         setIsLoading(false);
     }
 
@@ -25,10 +24,13 @@ const DayEvents = () => {
 
             <LayOut>
 
-                <Nav />
-                <Timezone />
-                <Tasks
-                    firstTimeFetchComplete={handleFirstTimeFetchComplete}
+                <div>
+                    <Nav />
+                    <Timezone />
+                </div>
+
+                <DayEventsBody
+                    loaderClose={hanndleLoaderClose}
                 />
 
             </LayOut>

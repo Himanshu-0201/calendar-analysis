@@ -1,4 +1,3 @@
-import LayOut from "./components/LayOut/LayOut";
 import "./App.css";
 
 import {
@@ -8,11 +7,9 @@ import {
 import DeniedAccess from "./components/DeniedAccess/DeniedAccess";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
 import ErrorComponent from "./Errors/Error";
-import ErrorProvider from "./Context/ErrorProvider";
 import RootLayOut from "./RootLayOut/RootLayOut";
-import Table from "./components/Table/Table";
 import DayEvents from "./components/DayEvents/DayEvents";
-import AllEvents from "./components/AllEvents/AllEvents";
+import PiChart from "./components/Charts/PiChart/PeChart";
 
 
 const router = createBrowserRouter([
@@ -33,8 +30,8 @@ const router = createBrowserRouter([
         element : <ErrorComponent />
       },
       {
-        path : "all-events",
-        element : <AllEvents />
+        path : "test",
+        element : <PiChart />
       }
     ]
   },

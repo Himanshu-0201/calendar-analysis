@@ -41,7 +41,7 @@ export const calculateTotalTimeSpend = (events, eventsShowTillCurrentTime) => {
     return totalTime;
 }
 
-export const modifyEventsForTasksComponent = (userEvents, eventsShowTillCurrentTime) => {
+export const modifyEventsForDayEventsTable = (userEvents, eventsShowTillCurrentTime) => {
 
 
     let updatedUserEvents = [];
@@ -72,7 +72,6 @@ export const modifyEventsForTasksComponent = (userEvents, eventsShowTillCurrentT
         updatedUserEvents = userEvents;
     }
 
-    const calculatedAllTimeSpend = calculateTotalTimeSpend(updatedUserEvents, eventsShowTillCurrentTime);
 
     const eventsArray = [];
 
@@ -100,6 +99,7 @@ export const modifyEventsForTasksComponent = (userEvents, eventsShowTillCurrentT
     })
 
 
+    const calculatedAllTimeSpend = calculateTotalTimeSpend(updatedUserEvents, eventsShowTillCurrentTime);
 
     const events = eventsArray
         .map(event => {
@@ -120,4 +120,67 @@ export const modifyEventsForTasksComponent = (userEvents, eventsShowTillCurrentT
 
     return events;
 
+}
+
+
+export const modifyEventsForPieChart = (userEvents, eventsShowTillCurrentTime) => {
+
+    let updatedUserEvents = [];
+
+    if (eventsShowTillCurrentTime) {
+
+        const currTime = new Date();
+
+        userEvents.forEach(event => {
+
+            const endTime = new Date(event.end);
+            const startTime = new Date(event.start);
+
+            const end = new Date(Math.min(endTime, currTime)).toISOString();
+            const start = new Date(Math.min(startTime, currTime)).toISOString();
+
+            if (start != end) {
+                updatedUserEvents.push({
+                    ...event,
+                    start,
+                    end
+                })
+            }
+
+        })
+    }
+    else {
+        updatedUserEvents = userEvents;
+    }
+
+
+    const eventsArray = [];
+
+    updatedUserEvents.forEach(event => {
+
+        const startTime = new Date(event.start);
+        const endTime = new Date(event.end);
+        const duration = (endTime - startTime) / 1000 / 60; // duration in minutes
+
+        //     // Normalize the event title by trimming and converting it to lowercase
+        let normalizedTitle = event.title.toLowerCase().replace(/\s+/g, ' ').trim();
+        normalizedTitle = normalizedTitle.charAt(0).toUpperCase() + normalizedTitle.slice(1);
+
+
+
+        // Check if the title already exists in the eventsArray
+        const existingEntry = eventsArray.find(entry => entry[0] === normalizedTitle);
+
+        if (existingEntry) {
+            // If it exists, add the duration
+            existingEntry[1] += duration;
+        } else {
+            // If it doesn't exist, create a new entry
+            eventsArray.push([normalizedTitle, duration]);
+        }
+
+    })
+
+
+    return eventsArray;
 }

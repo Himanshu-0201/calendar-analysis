@@ -10,8 +10,8 @@ const Table = ({ events }) => {
     const tableDate = tableEventsData.map((event, index) => {
         return (
             <tr key={index}>
-                <td className="border border-slate-300 text-center p-4">{"Himanshu"}</td>
-                <td className="border border-slate-300 text-center p-4">{10}</td>
+                <td className="border border-slate-300 text-center p-4">{event.eventName}</td>
+                <td className="border border-slate-300 text-center p-4">{event.totalTimeSpend}</td>
                 <td className="border border-slate-300 text-center p-4">
                     <CheckBox />
                 </td>
@@ -33,7 +33,6 @@ const Table = ({ events }) => {
                             <th className="border border-slate-300 text-center p-4">Duration</th>
                             <th className="border border-slate-300 text-center p-4">Important</th>
                             <th className="border border-slate-300 text-center p-4">Urgent</th>
-
                         </tr>
                     </thead>
                     <tbody>
