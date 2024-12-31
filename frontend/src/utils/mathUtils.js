@@ -1,5 +1,5 @@
-import { events } from "../data/eventsData";
 
+import { normalizedTitleFunction } from "./mathUtils.ts";
 
 export const convertMinutesToHours = (minutes) => {
     const hours = Math.floor(minutes / 60); // Calculate full hours
@@ -73,6 +73,8 @@ export const modifyEventsForDayEventsTable = (userEvents, eventsShowTillCurrentT
     }
 
 
+
+
     const eventsArray = [];
 
     updatedUserEvents.forEach(event => {
@@ -80,9 +82,16 @@ export const modifyEventsForDayEventsTable = (userEvents, eventsShowTillCurrentT
         const startTime = new Date(event.start);
         const endTime = new Date(event.end);
         const duration = (endTime - startTime) / 1000 / 60; // duration in minutes
+        
+        // is important and urgent
+
+        
+        const isImportant = event.isImportant === null ? true : event.isImportant;
+        const isUrgent = event.isUrgent === null ? false : event.isUrgent;
 
         //     // Normalize the event title by trimming and converting it to lowercase
-        const normalizedTitle = event.title.toLowerCase().replace(/\s+/g, ' ').trim();
+        // const normalizedTitle = event.title.toLowerCase().replace(/\s+/g, ' ').trim();
+        const normalizedTitle = normalizedTitleFunction(event.title);
 
 
         // Check if the title already exists in the eventsArray
@@ -93,7 +102,7 @@ export const modifyEventsForDayEventsTable = (userEvents, eventsShowTillCurrentT
             existingEntry.duration += duration;
         } else {
             // If it doesn't exist, create a new entry
-            eventsArray.push({ title: normalizedTitle, duration });
+            eventsArray.push({ title: normalizedTitle, duration , isImportant : isImportant, isUrgent : isUrgent});
         }
 
     })
@@ -111,7 +120,9 @@ export const modifyEventsForDayEventsTable = (userEvents, eventsShowTillCurrentT
                 eventName: eventName,
                 totalTimeSpend: totalTimeSpend,
                 percentage: percentage,
-                duration: event.duration // Keep the original duration for sorting
+                isImportant : event.isImportant,
+                isUrgent : event.isUrgent,
+                duration: event.duration, // Keep the original duration for sorting,
             };
         })
         .sort((a, b) => b.duration - a.duration) // Sort by duration in descending order
@@ -163,10 +174,10 @@ export const modifyEventsForPieChart = (userEvents, eventsShowTillCurrentTime) =
         const duration = (endTime - startTime) / 1000 / 60; // duration in minutes
 
         //     // Normalize the event title by trimming and converting it to lowercase
-        let normalizedTitle = event.title.toLowerCase().replace(/\s+/g, ' ').trim();
-        normalizedTitle = normalizedTitle.charAt(0).toUpperCase() + normalizedTitle.slice(1);
+        // let normalizedTitle = event.title.toLowerCase().replace(/\s+/g, ' ').trim();
+        // normalizedTitle = normalizedTitle.charAt(0).toUpperCase() + normalizedTitle.slice(1);
 
-
+        const normalizedTitle = normalizedTitleFunction(event.title);
 
         // Check if the title already exists in the eventsArray
         const existingEntry = eventsArray.find(entry => entry[0] === normalizedTitle);

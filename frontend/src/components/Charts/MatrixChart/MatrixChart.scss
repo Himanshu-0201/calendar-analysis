@@ -1,0 +1,35 @@
+
+._matrix_box-1{
+    background-color: #f43f5e;
+}
+
+._matrix_box-2{
+    background-color: #FFCFEF;
+}
+._matrix_box-3{
+    background-color: #f59e0b;
+}
+._matrix_box-4{
+    background-color: #a5b4fc;
+}
+
+._matrix_reactangle{
+
+    @apply rounded flex items-center justify-center;
+
+   background-color:  #a3a3a3;
+   color: white;
+   font-weight: bold;
+   font-size: 0.9rem;
+   
+}
+
+._matrix_custom-vertical-text{
+    @apply [writing-mode:vertical-rl] transform rotate-180;
+}
+
+._matrix-square{
+    @apply col-span-5 aspect-square rounded-md flex items-center justify-center;
+}
+
+

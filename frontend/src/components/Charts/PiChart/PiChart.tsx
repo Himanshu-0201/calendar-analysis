@@ -1,11 +1,18 @@
 
+
+
+import React from "react";
 import { Chart } from "react-google-charts";
 
-const PiChart = ({events})=>{
+interface EventsType {
+    events: [string, number][]
+}
+
+const PiChart : React.FC<EventsType> = ({events} )=>{
 
 
-    const data = [
-        ["Task", "Miutes per Day"],
+    const data : [string, string | number] []= [
+        ["Task", "Minutes per Day"],
         ...events
     ];
 

@@ -9,7 +9,7 @@ import PageNotFound from "./components/PageNotFound/PageNotFound";
 import ErrorComponent from "./Errors/Error";
 import RootLayOut from "./RootLayOut/RootLayOut";
 import DayEvents from "./components/DayEvents/DayEvents";
-import PiChart from "./components/Charts/PiChart/PeChart";
+import Test from "./components/Test/Test.tsx";
 
 
 const router = createBrowserRouter([
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path : "test",
-        element : <PiChart />
+        element : <Test />
       }
     ]
   },

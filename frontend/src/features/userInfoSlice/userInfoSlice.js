@@ -1,7 +1,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-import { events } from "../../data/eventsData";
+import { events } from "../../data/eventsData.ts";
 
 const currDate = new Date();
 
@@ -30,7 +30,7 @@ export const userInfoSlice = createSlice({
             }
         },
 
-        unpdateEvents: (state, actions) => {
+        updateEvents: (state, actions) => {
             state.events = actions.payload.events;
         },
 
@@ -48,7 +48,7 @@ export const userInfoSlice = createSlice({
 });
 
 
-export const { unpdateEvents, updateCurrDate, updateUser, userSingOut, updateEventsShowTillCurrentTime } = userInfoSlice.actions;
+export const { updateEvents, updateCurrDate, updateUser, userSingOut, updateEventsShowTillCurrentTime } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;
 

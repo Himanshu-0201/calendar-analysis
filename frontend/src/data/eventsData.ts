@@ -1,7 +1,14 @@
-// you can remove this file from the repo, no more needed
 
-export const events = [
 
+type EventType = {
+    title: string,
+    start : string,
+    end: string,
+    isImportant: boolean,
+    isUrgent: boolean,
+}
+
+export const events : Array<EventType> = [
     {
         title: "Reading",
         start: "2024-10-29T23:00:00+05:30",
@@ -30,8 +37,4 @@ export const events = [
         isImportant: true,
         isUrgent: false
     }
-
-]
-
-
-export const eventsData = {};
+];

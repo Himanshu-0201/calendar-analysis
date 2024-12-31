@@ -1,22 +1,29 @@
 import { useSelector } from "react-redux";
-import CheckBox from "../../Ui/CheckBox/CheckBox";
+import CheckBox from "../../Ui/CheckBox/CheckBox.tsx";
 
 
 
-const Table = ({ events }) => {
+const Table = ({ events, importantUrgentCheckedBoxChangeHandler }) => {
 
     const tableEventsData = events ? events : [];
+
 
     const tableDate = tableEventsData.map((event, index) => {
         return (
             <tr key={index}>
                 <td className="border border-slate-300 text-center p-4">{event.eventName}</td>
                 <td className="border border-slate-300 text-center p-4">{event.totalTimeSpend}</td>
-                <td className="border border-slate-300 text-center p-4">
-                    <CheckBox />
+                <td className="border border-slate-300 text-center p-4">  {/* Important */}
+                    <CheckBox
+                        isChecked={event.isImportant}
+                        onChange={(e) => { importantUrgentCheckedBoxChangeHandler(e, event.eventName, "important") }}
+                    />
                 </td>
-                <td className="border border-slate-300 text-center p-4">
-                    <CheckBox />
+                <td className="border border-slate-300 text-center p-4"> {/* Urgent */}
+                    <CheckBox
+                        isChecked={event.isUrgent}
+                        onChange={(e) => { importantUrgentCheckedBoxChangeHandler(e, event.eventName, "urgent") }}
+                    />
                 </td>
             </tr>
         )
