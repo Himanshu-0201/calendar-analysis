@@ -5,9 +5,9 @@ import "react-datepicker/dist/react-datepicker.css"; // Date picker styles
 
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
-import { isToday } from "../../../utils/dateUtils";
+import { isToday } from "../../../utils/dateUtils.ts";
 import { useRef } from "react";
-import useOutSideClick from "../../../hooks/useOutSideClick";
+import useOutSideClick from "../../../hooks/useOutSideClick.ts";
 
 
 const CustomDatePicker = ({ selectedDate, handleDateChange, handleCloseDatePicker }) => {

@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 
 import { GoogleOAuthProvider } from "@react-oauth/google"
 
-import store from './app/store';
+import store from './app/store.ts';
 import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

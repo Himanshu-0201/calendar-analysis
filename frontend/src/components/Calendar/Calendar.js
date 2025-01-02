@@ -4,8 +4,8 @@ import { AiOutlineCalendar } from "react-icons/ai"; // Calendar icon
 import "react-datepicker/dist/react-datepicker.css"; // Date picker styles
 import "./Calendar.scss"; // Your styles
 import { useDispatch, useSelector } from "react-redux";
-import { updateCurrDate } from "../../features/userInfoSlice/userInfoSlice";
-import { isToday, isYesterday } from "../../utils/dateUtils";
+import { updateCurrDate } from "../../features/userInfoSlice/userInfoSlice.ts";
+import { isToday, isYesterday } from "../../utils/dateUtils.ts";
 import CustomDatePicker from "./DatePicker/DatePicker";
 
 const Calendar = () => {
