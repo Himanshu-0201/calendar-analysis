@@ -1,6 +1,6 @@
-
+import React from "react"
 import { Outlet } from "react-router-dom"
-import ErrorProvider from "../Context/ErrorProvider"
+import ErrorProvider from "../Context/ErrorProvider.tsx"
 
 const RootLayOut = () => {
 

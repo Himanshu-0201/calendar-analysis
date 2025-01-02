@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
-import { ErrorContext } from "../Context/ErrorContext";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { ErrorContext } from "../Context/ErrorContext.ts";
+import { useNavigate } from "react-router-dom";
 
 
 function Error() {

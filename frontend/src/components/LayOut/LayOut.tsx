@@ -1,6 +1,6 @@
 
 import "./LayOut.scss";
-
+import React from "react";
 
 const LayOut = ({ children }) => {
 

@@ -1,12 +1,17 @@
-import React from 'react';
-import { FaSignInAlt } from 'react-icons/fa';
-import config from '../../config.js';
-import './SignIn.scss';
+
+// set green color when hovering
+import React from "react";
+import { FaSignInAlt } from "react-icons/fa";
+import "./SignIn.scss";
+import config from "../../config";
+// import { useEffect } from "react";
+
+let user = true;
 
 const SingIn = () => {
 
     const makeUserSignIn = () => {
-        const url = config.signIn;
+        const url  = config.signIn;
         window.location.href = url; // can I use something else
     }
 

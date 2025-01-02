@@ -1,22 +1,23 @@
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import config from "../../../config";
-import React, { useRef } from "react";
+import { userSingOut } from "../../../features/userInfoSlice/userInfoSlice.ts";
+import { useRef } from "react";
+import useOutSideClick from "../../../hooks/useOutSideClick.ts";
 import "./DropDown.scss"
-import { useError } from "../../../hooks/useError.js";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../../app/store";
-import { setUserSignOut } from "../../../features/userInfoSlice/userInfoSlice.ts";
-import useOutSideClick from "../../../hooks/useOutSideClick.js";
-
+import { useError } from "../../../hooks/useError.ts";
+import { RootState } from "../../../app/store.ts";
 
 
 
 const DropDown = ({ handleCloseDropDown }) => {
 
-    const { throwError } = useError();
-    const userName = useSelector((state: RootState) => state.userInfo.username);
+    // make it more correct , you shouldn't define it like this
+    const { throwError = (error: any) => console.error("throwError is undefined", error) } = useError();
+    const userName = useSelector((state : RootState) => state.userInfo.name);
     const dispatch = useDispatch();
-
     const dropDownRef = useRef(null);
+
 
 
     useOutSideClick(dropDownRef, () => {
@@ -31,6 +32,7 @@ const DropDown = ({ handleCloseDropDown }) => {
 
             const url = `${config.signOut}`;
 
+            console.log(url);
 
             const response = await fetch(url, {
                 method: "POST",
@@ -38,21 +40,21 @@ const DropDown = ({ handleCloseDropDown }) => {
             });
 
             if (response.ok) {
-                dispatch(setUserSignOut());
+                dispatch(userSingOut());
             }
             else {
                 throw new Error("something went wrong");
             }
 
         } catch (error) {
-            throwError(error);
+           throwError(error);
         }
 
     }
 
 
-    return (
 
+    return (
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10"
             ref={dropDownRef}
         >
@@ -64,14 +66,14 @@ const DropDown = ({ handleCloseDropDown }) => {
 
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationButton">
                 {/* <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-        </li>
-        <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-        </li>
-        <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-        </li> */}
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+            </li>
+            <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+            </li>
+            <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+            </li> */}
             </ul>
 
             <div className="py-2 border-t border-gray-200">
@@ -84,8 +86,6 @@ const DropDown = ({ handleCloseDropDown }) => {
 
         </div>
     )
-
-
 };
 
 export default DropDown;

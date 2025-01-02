@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-import LayOut from "../LayOut/LayOut";
-import Nav from "../Nav/Nav";
-import Timezone from "../Timezone/Timezone";
-import Loader from "../Loader/Loader";
-import DayEventsBody from "./DayEventsBody/DayEventsBody";
+import LayOut from "../LayOut/LayOut.tsx";
+import Nav from "../../Ui/Nav/Nav.tsx";
+import Timezone from "../../Ui/Timezone/Timezone.tsx";
+import Loader from "../../Ui/Loader/Loader.tsx";
+import DayEventsBody from "./DayEventsBody/DayEventsBody.tsx";
 
 const DayEvents = () => {
 

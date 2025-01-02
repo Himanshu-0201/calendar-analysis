@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import React from "react";
 import CheckBox from "../../Ui/CheckBox/CheckBox.tsx";
 
 

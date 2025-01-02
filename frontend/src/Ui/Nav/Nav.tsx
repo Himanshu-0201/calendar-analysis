@@ -1,18 +1,19 @@
-import React from 'react';
 
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store.ts';
-import SingIn from '../SignIn/SignIn.tsx';
-import Avatar from './Avatar/Avatar.tsx';
+import React from "react";
+import Avatar from "./Avatar/Avatar.tsx";
+import SingIn from "../../Ui/SignIn/SignIn.tsx";
+
+import "./Nav.scss";
+import { useSelector } from "react-redux";
+import CheckInCheckOut from "../../Ui/CheckInCheckOut/CheckInCheckOut.tsx";
+import { RootState } from "../../app/store.ts";
 
 const Nav = () => {
 
-    // const isUserSignedIn = useSelector((state: RootState) => state.userInfo.isSingedIn);
-    const isUserSignedIn = true;
+    const isUserSignedIn = useSelector((state : RootState) => state.userInfo.isSignedIn);
 
 
     return (
-
         <div className="border-2 _nav-container">
             <div className="place-self-end _nav-avatar-container flex items-center space-x-4">
 
@@ -20,18 +21,17 @@ const Nav = () => {
                     <>
                         <div className="flex items-center space-x-4 border-2 border-gray-300 p-3 rounded-md">
                             <p className="text-gray-700 font-medium">See registered time till now</p>
-                            {/* <CheckInCheckOut /> */}
+                            <CheckInCheckOut />
                         </div>
 
                         <Avatar />
                     </>
 
-                    : <SingIn /> }
+                    : <SingIn />}
             </div>
         </div>
+
     )
-
 };
-
 
 export default Nav;

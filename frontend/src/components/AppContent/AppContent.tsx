@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import config from "../../config.js";
 import axios from "axios";
-import { useError } from "../../hooks/useError.js";
+import { useError } from "../../hooks/useError.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { modifyEventsForPieChart, modifyEventsForMatrixChart, modifyEventsForTable, normalizedTitleFunction } from "../../utils/mathUtils.ts";
 import MatrixChart from "../Charts/MatrixChart/MatrixChart.tsx";
 import PiChart from "../Charts/PiChart/PiChart.tsx";
-import Table from "../Table/Table.js";
-import { setUserInfo } from "../../features/userInfoSlice/userInfoSlice.ts";
+import Table from "../Table/Table.tsx";
 import { RootState } from "../../app/store.ts";
 
 
@@ -15,10 +14,12 @@ const AppContent = ({ startTime, endTime, eventsList, currDateStr, eventsShowTil
 
 
 
-    const { throwError } = useError();
+    const { throwError = (error: any) => console.error("throwError is undefined", error) } = useError();
+
     const dispatch = useDispatch();
 
-    const isUserSingedIn = useSelector((state: RootState) => state.userInfo.isSingedIn);
+    // const isUserSingedIn = useSelector((state: RootState) => state.userInfo.isSingedIn);
+    const isUserSingedIn = false;
 
     const piChartEvents = modifyEventsForPieChart(eventsList, eventsShowTillCurrentTime);
     const tableEvents = modifyEventsForTable(eventsList, eventsShowTillCurrentTime);
@@ -66,7 +67,7 @@ const AppContent = ({ startTime, endTime, eventsList, currDateStr, eventsShowTil
 
                     if (isUserSingedIn === false) {
                         console.log("setting user info");
-                        dispatch(setUserInfo({ name: userName, isUSerSingedIn: true, eventsShowTillCurrentTime }));
+                        // dispatch(setUserInfo({ name: userName, isUSerSingedIn: true, eventsShowTillCurrentTime }));
                     }
 
                     dispatch(updateEvents({ events }));

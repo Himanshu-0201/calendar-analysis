@@ -1,8 +1,7 @@
-import { EventType } from "../models/utilsModels.ts";
+import { UserEvent } from "../models/UserEventsModels.ts";
 
 
-
-export const events : Array<EventType> = [
+export const events : Array<UserEvent> = [
     {
         title: "Reading",
         start: "2024-10-29T23:00:00+05:30",

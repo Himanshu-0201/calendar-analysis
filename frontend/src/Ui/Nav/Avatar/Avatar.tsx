@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import  React , { useState } from "react";
+import DropDown from "../DropDown/DropDown.tsx";
 import "./Avatar.scss";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
-import DropDown from "../DropDown/DropDown.tsx";
+import { RootState } from "../../../app/store.ts";
 
 const Avatar = () => {
 
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const userName = useSelector( (state : RootState) => state.userInfo.username);    
+    const userName = useSelector((state : RootState) => state.userInfo.name);
     const formattedFirstChar = userName ? userName.charAt(0).toUpperCase() : '';
 
 
@@ -23,6 +23,7 @@ const Avatar = () => {
 
 
     return (
+        <>
 
             <div className="relative inline-block text-left">
 
@@ -37,6 +38,7 @@ const Avatar = () => {
                 />)}
 
             </div>
+        </>
     )
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import "./MatrixChart.scss";
-import { MatrixChartProp } from '../../../models/utilsModels';
+import { MatrixChartProp } from '../../../models/ChartModels';
 
 
 interface MatrixChartPropObject {

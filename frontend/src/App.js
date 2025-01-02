@@ -4,11 +4,11 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import DeniedAccess from "./components/DeniedAccess/DeniedAccess";
-import PageNotFound from "./components/PageNotFound/PageNotFound";
-import ErrorComponent from "./Errors/Error";
-import RootLayOut from "./RootLayOut/RootLayOut";
-import DayEvents from "./components/DayEvents/DayEvents";
+import DeniedAccess from "./components/Pages/DeniedAccess/DeniedAccess.tsx";
+import PageNotFound from "./components/Pages/PageNotFound/PageNotFound.tsx";
+import ErrorComponent from "./Errors/Error.tsx";
+import RootLayOut from "./RootLayOut/RootLayOut.tsx";
+import DayEvents from "./components/DayEvents/DayEvents.tsx";
 import Test from "./components/Test/Test.tsx";
 
 

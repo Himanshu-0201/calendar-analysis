@@ -1,12 +1,11 @@
 import React from "react";
-import LayOut from "../LayOut/LayOut";
+import LayOut from "../LayOut/LayOut.tsx";
 import AppContent from "../AppContent/AppContent.tsx";
 import Cookies from "js-cookie";
-import { updateEvents } from "../../features/WeekEventsSlice/WeekEventsSlice.ts";
 import { getStartAndEndOfWeek } from "../../utils/dateUtils.ts";
 import { useSelector } from "react-redux";
 import Nav from "../../Ui/Nav/Nav.tsx";
-
+import { updateEvents } from "../../features/weekEventsSlice/weekEventsSlice.ts";
 
 const WeekEvents = () => {
 

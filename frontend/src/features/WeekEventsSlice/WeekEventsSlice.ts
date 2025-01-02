@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { events } from '../../data/eventsData';
+import { events } from '../../data/eventsData.ts';
 
-import { EventType } from '../../models/utilsModels';
+import { UserEvent } from '../../models/UserEventsModels.ts';
 
 interface WeekEventsState {
-    events: EventType[];
+    events: UserEvent[];
     currDate: string;
 }
 

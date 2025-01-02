@@ -1,38 +1,54 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-interface UserInfoStateType {
-    username: string;
-    isSingedIn: boolean;
-    eventShowTillCurrentTime: boolean;
+import { events } from "../../data/eventsData.ts";
+
+const currDate = new Date();
+
+const initialState = {
+    name: "Default name",
+    events: events,
+    currDate: currDate.toISOString(),
+    isSignedIn: false,
+    eventsShowTillCurrentTime : false,
+   
 }
 
-const initialState : UserInfoStateType = {
-    username : "default",
-    isSingedIn : false,
-    eventShowTillCurrentTime : false,
-}
 
-const userInfoSlice = createSlice({
-    name : "userInfo",
+export const userInfoSlice = createSlice({
+    name: 'userInfo',
     initialState,
-    reducers : {
+    reducers: {
 
-        setUserInfo : (state, action) => { 
-            const {username, isSingedIn, eventShowTillCurrentTime} = action.payload;
-            return {username, isSingedIn, eventShowTillCurrentTime};
+
+        updateUser: (state, action) => {
+
+            const { name, events, currDate , eventsShowTillCurrentTime} = action.payload;
+
+            return {
+                name, events, currDate,  eventsShowTillCurrentTime, isSignedIn : true
+            }
         },
-        setUserSignOut : (state) => {
+
+        updateEvents: (state, actions) => {
+            state.events = actions.payload.events;
+        },
+
+        updateCurrDate: (state, actions) => {
+            state.currDate = actions.payload.currDate;
+        },
+
+        userSingOut: (state) => {
             return initialState;
         },
-        setEventShowTillCurrentTime : (state, action) => {
-            state.eventShowTillCurrentTime = action.payload;
-        },
+        updateEventsShowTillCurrentTime : (state, action) => {
+            state.eventsShowTillCurrentTime = action.payload.eventsShowTillCurrentTime;
+        }
     }
-
 });
 
 
-export const { setUserInfo, setUserSignOut, setEventShowTillCurrentTime } = userInfoSlice.actions;
+export const { updateEvents, updateCurrDate, updateUser, userSingOut, updateEventsShowTillCurrentTime } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;
+

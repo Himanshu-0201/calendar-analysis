@@ -1,31 +1,34 @@
 
 import PiChart from "../../Charts/PiChart/PiChart.tsx";
-import { useEffect, useState } from "react";
-import { useError } from "../../../hooks/useError";
-import Table from "../../Table/Table";
-import { modifyEventsForDayEventsTable, modifyEventsForPieChart } from "../../../utils/mathUtils";
+import React, { useEffect, useState } from "react";
+import { useError } from "../../../hooks/useError.ts";
+import Table from "../../Table/Table.tsx";
 import { useSelector, useDispatch } from "react-redux";
 import { TbLoader3 } from "react-icons/tb";
 import axios from "axios";
 import Cookies from "js-cookie";
 import config from "../../../config";
-import { updateEvents, updateUser, userSingOut } from "../../../features/userInfoSlice/userInfoSlice";
-import { modifyEventsForMatrixChart, normalizedTitleFunction } from "../../../utils/mathUtils.ts";
+import { updateEvents, updateUser, userSingOut } from "../../../features/userInfoSlice/userInfoSlice.ts";
+import { modifyEventsForMatrixChart, normalizedTitleFunction , modifyEventsForDayEventsTable, modifyEventsForPieChart } from "../../../utils/mathUtils.ts";
 import MatrixChart from "../../Charts/MatrixChart/MatrixChart.tsx";
 
 import "./DayEventsBody.scss";
+import { RootState } from "../../../app/store.ts";
 
 
 const DayEventsBody = ({ loaderClose }) => {
 
     const [loading, setLoading] = useState(true);
-    const { throwError } = useError();
-    const currDateStr = useSelector(state => state.userInfo.currDate);
-    const eventsList = useSelector(state => state.userInfo.events);
+
+    // make it more correct , you shouldn't define it like this
+       const { throwError = (error: any) => console.error("throwError is undefined", error) } = useError();
+
+    const currDateStr = useSelector((state : RootState) => state.userInfo.currDate);
+    const eventsList = useSelector((state : RootState) => state.userInfo.events);
     const dispatch = useDispatch();
 
 
-    const eventsShowTillCurrentTime = useSelector(state => state.userInfo.eventsShowTillCurrentTime);
+    const eventsShowTillCurrentTime = useSelector((state : RootState) => state.userInfo.eventsShowTillCurrentTime);
 
     const tableEvents = modifyEventsForDayEventsTable(eventsList, eventsShowTillCurrentTime);
     const piChartEvents = modifyEventsForPieChart(eventsList, eventsShowTillCurrentTime);
