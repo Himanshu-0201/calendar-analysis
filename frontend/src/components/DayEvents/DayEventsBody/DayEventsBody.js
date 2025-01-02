@@ -34,10 +34,6 @@ const DayEventsBody = ({ loaderClose }) => {
 
 
 
-
-
-
-
     useEffect(() => {
 
 

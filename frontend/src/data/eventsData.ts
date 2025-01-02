@@ -1,12 +1,6 @@
+import { EventType } from "../models/utilsModels.ts";
 
 
-type EventType = {
-    title: string,
-    start : string,
-    end: string,
-    isImportant: boolean,
-    isUrgent: boolean,
-}
 
 export const events : Array<EventType> = [
     {

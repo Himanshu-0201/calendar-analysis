@@ -11,7 +11,6 @@ const initialState = {
     currDate: currDate.toISOString(),
     isSignedIn: false,
     eventsShowTillCurrentTime : false,
-   
 }
 
 

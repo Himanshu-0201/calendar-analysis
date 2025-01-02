@@ -1,22 +1,17 @@
 
 import React from "react";
-import MatrixChart from "../Charts/MatrixChart/MatrixChart.tsx";
-import { useSelector } from "react-redux";
-import {  modifyEventsForMatrixChart } from "../../utils/mathUtils.ts";
+import WeekEvents from "../WeekEvents/WeekEvents.tsx";
+
 
 const Test = () => {
 
-    const eventsList = useSelector((state: any) => state.userInfo.events);
-    const eventsShowTillCurrentTime = useSelector((state: any) => state.userInfo.eventsShowTillCurrentTime);
-    const MatrixChartData = modifyEventsForMatrixChart(eventsList, eventsShowTillCurrentTime);
 
 
 
     return (
+        <WeekEvents>
 
-        <MatrixChart
-            MatrixChartData={MatrixChartData}
-        />
+        </WeekEvents>
     )
 
 };

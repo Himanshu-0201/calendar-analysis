@@ -108,6 +108,7 @@ export const modifyEventsForDayEventsTable = (userEvents, eventsShowTillCurrentT
     })
 
 
+
     const calculatedAllTimeSpend = calculateTotalTimeSpend(updatedUserEvents, eventsShowTillCurrentTime);
 
     const events = eventsArray
@@ -128,6 +129,7 @@ export const modifyEventsForDayEventsTable = (userEvents, eventsShowTillCurrentT
         .sort((a, b) => b.duration - a.duration) // Sort by duration in descending order
         .map(({ duration, ...rest }) => rest); // Remove duration if not needed in the final output
 
+        console.log(events);
 
     return events;
 

@@ -4,11 +4,13 @@
 import React from "react";
 import { Chart } from "react-google-charts";
 
-interface EventsType {
-    events: [string, number][]
+import { PiChartEventsType } from "../../../models/utilsModels";
+
+interface PiChartEventTypeObject {
+    events: PiChartEventsType
 }
 
-const PiChart : React.FC<EventsType> = ({events} )=>{
+const PiChart : React.FC<PiChartEventTypeObject> = ({events} )=>{
 
 
     const data : [string, string | number] []= [
