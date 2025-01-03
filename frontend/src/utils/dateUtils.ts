@@ -95,7 +95,6 @@ export const getWeekBounds = (date: (string | Date)): { firstDateOfWeek: Date, l
     const lastDateOfWeek = new Date(firstDateOfWeek); // Clone date
     lastDateOfWeek.setDate(firstDateOfWeek.getDate() + 6);
 
-    console.log(firstDateOfWeek , " ", lastDateOfWeek);
 
     return { firstDateOfWeek, lastDateOfWeek };
 }

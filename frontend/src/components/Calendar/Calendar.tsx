@@ -4,22 +4,24 @@ import { AiOutlineCalendar } from "react-icons/ai"; // Calendar icon
 import "react-datepicker/dist/react-datepicker.css"; // Date picker styles
 import "./Calendar.scss"; // Your styles
 import { useDispatch, useSelector } from "react-redux";
-import { updateCurrDate } from "../../features/userInfoSlice/userInfoSlice.ts";
+import { updateCurrDate } from "../../features/dayEventsSlice/dayEventsSlice.ts";
 import { isToday, isYesterday } from "../../utils/dateUtils.ts";
 import CustomDatePicker from "./DatePicker/DatePicker";
+import { RootState } from "../../app/store.ts";
 
 const Calendar = () => {
-    const currDateStr = useSelector((state) => state.userInfo.currDate);
+    const currDateStr = useSelector((state : RootState) => state.dayEvents.currDate);
     const dispatch = useDispatch();
     const currDate = new Date(currDateStr);
 
-    const isSignedIn = useSelector(state => state.userInfo.isSignedIn);
+
+    const isSignedIn = useSelector((state : RootState) => state.userInfo.isSignedIn);
 
     // State to manage the date picker visibility
     const [isDatePickerOpen, setDatePickerOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(currDate);
 
-    const getDate = (date) => {
+    const getDate = (date : Date) => {
         const day = date.getDate();
         const monthName = date.toLocaleDateString("en-US", { month: "short" });
         const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
@@ -29,18 +31,18 @@ const Calendar = () => {
     const increaseDate = () => {
         const newDate = new Date(currDate);
         newDate.setDate(newDate.getDate() + 1);
-        dispatch(updateCurrDate({ currDate: newDate.toISOString() }));
+        dispatch(updateCurrDate(newDate.toISOString()));
     };
 
     const decreaseDate = () => {
         const newDate = new Date(currDate);
         newDate.setDate(newDate.getDate() - 1);
-        dispatch(updateCurrDate({ currDate: newDate.toISOString() }));
+        dispatch(updateCurrDate(newDate.toISOString()));
     };
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
-        dispatch(updateCurrDate({ currDate: date.toISOString() }));
+        dispatch(updateCurrDate(date.toISOString()));
         setDatePickerOpen(false); // Close the date picker after selection
     };
 

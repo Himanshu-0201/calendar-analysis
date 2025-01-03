@@ -1,10 +1,16 @@
 import React from "react";
 import { getWeekBounds, getDate } from "../../../utils/dateUtils.ts"; // Ensure these functions are correctly imported
 
-import { RiArrowLeftWideFill, RiArrowRightWideFill  } from "react-icons/ri";
+import { RiArrowLeftWideFill, RiArrowRightWideFill } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../app/store.ts";
+import { updateCurrDate } from "../../../features/weekEventsSlice/weekEventsSlice.ts";
 
 const WeekRangeControls = () => {
-    const currDate = new Date();
+
+    const currDate = useSelector((state: RootState) => state.weekEvents.currDate);
+    const dispatch = useDispatch();
+
     const { firstDateOfWeek, lastDateOfWeek } = getWeekBounds(currDate);
 
     const firstDateStr = getDate(firstDateOfWeek);
@@ -12,10 +18,23 @@ const WeekRangeControls = () => {
 
     const weekBoundStr = `${firstDateStr}   -   ${lastDateStr}`;
 
+    const incrementWeek = () => {
+        const date = new Date(currDate);
+        date.setDate(date.getDate() + 7);
+        dispatch(updateCurrDate(date.toISOString()));
+    };
+
+    const decrementWeek = () => {
+        const date = new Date(currDate);
+        date.setDate(date.getDate() - 7);
+        dispatch(updateCurrDate(date.toISOString()));
+    };
+
     return (
         <div className="flex justify-between items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm text-center">
             <button
-                className="flex items-center px-4 py-2"
+                className="flex items-center px-2 py-2"
+                onClick={decrementWeek}
             >
                 <RiArrowLeftWideFill className="text-xl" />
             </button>
@@ -23,7 +42,8 @@ const WeekRangeControls = () => {
                 {weekBoundStr}
             </div>
             <button
-                className="flex items-center px-4 py-2"
+                className="flex items-center px-2 py-2"
+                onClick={incrementWeek}
             >
                 <RiArrowRightWideFill className="text-xl" />
             </button>

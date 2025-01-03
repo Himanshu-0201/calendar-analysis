@@ -9,7 +9,7 @@ import PageNotFound from "./components/Pages/PageNotFound/PageNotFound.tsx";
 import ErrorComponent from "./Errors/Error.tsx";
 import RootLayOut from "./RootLayOut/RootLayOut.tsx";
 import DayEvents from "./components/DayEvents/DayEvents.tsx";
-import Test from "./components/Test/Test.tsx";
+import WeekEvents from "./components/WeekEvents/WeekEvents.tsx";
 
 
 const router = createBrowserRouter([
@@ -30,8 +30,8 @@ const router = createBrowserRouter([
         element : <ErrorComponent />
       },
       {
-        path : "test",
-        element : <Test />
+        path : "week-events",
+        element : <WeekEvents />
       }
     ]
   },

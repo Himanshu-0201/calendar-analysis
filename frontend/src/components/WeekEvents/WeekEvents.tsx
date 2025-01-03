@@ -17,8 +17,7 @@ const WeekEvents = () => {
     const currDateStr = useSelector((state: RootState) => state.weekEvents.currDate);
 
     // Parse the date string to create a Date object
-    const currDate = new Date();
-    const { startOfWeek, endOfWeek } = getStartAndEndOfWeek(currDate);
+    const { startOfWeek, endOfWeek } = getStartAndEndOfWeek(currDateStr);
 
 
     const startOfWeekStr = startOfWeek.toISOString();
@@ -33,7 +32,7 @@ const WeekEvents = () => {
 
 
 
-    const handleLoaderClose = (event: any) => {
+    const handleLoaderClose = () => {
         setIsLoading(false);
     }
 

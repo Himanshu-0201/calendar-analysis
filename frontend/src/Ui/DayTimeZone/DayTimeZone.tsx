@@ -1,7 +1,7 @@
 // I want to collepse border for outer div
 
 import React from "react";
-import Calendar from "../../components/Calendar/Calendar.js";
+import Calendar from "../../components/Calendar/Calendar.tsx";
 import TotalTime from "../TotalTime/TotalTime.tsx";
 import "./DayTimeZone.scss";
 import { RootState } from "../../app/store.ts";

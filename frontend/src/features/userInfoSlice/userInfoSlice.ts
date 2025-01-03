@@ -1,15 +1,8 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 
-import { events } from "../../data/eventsData.ts";
-import { act } from "react";
-
-const currDate = new Date();
 
 const initialState = {
     name: "Default name",
-    events: events,
-    currDate: currDate.toISOString(),
     isSignedIn: false,
     eventsShowTillCurrentTime : false,
 }
@@ -20,15 +13,6 @@ export const userInfoSlice = createSlice({
     initialState,
     reducers: {
 
-
-        updateUser: (state, action) => {
-
-            const { name, events, currDate , eventsShowTillCurrentTime} = action.payload;
-
-            return {
-                name, events, currDate,  eventsShowTillCurrentTime, isSignedIn : true
-            }
-        },
 
         updateUserInfo : (state, action) => {
 
@@ -45,14 +29,6 @@ export const userInfoSlice = createSlice({
 
         },
 
-        updateEvents: (state, actions) => {
-            state.events = actions.payload.events;
-        },
-
-        updateCurrDate: (state, actions) => {
-            state.currDate = actions.payload.currDate;
-        },
-
         userSingOut: (state) => {
             return initialState;
         },
@@ -63,7 +39,7 @@ export const userInfoSlice = createSlice({
 });
 
 
-export const { updateEvents, updateCurrDate, updateUser, userSingOut, updateEventsShowTillCurrentTime , updateUserInfo} = userInfoSlice.actions;
+export const {userSingOut, updateEventsShowTillCurrentTime , updateUserInfo} = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;
 

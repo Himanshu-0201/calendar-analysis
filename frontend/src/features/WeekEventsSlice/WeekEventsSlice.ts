@@ -20,20 +20,23 @@ export const weekEventsSlice = createSlice({
     initialState,
     reducers: {
 
-        updateWeek: (state, action) => {
+        updateWeek: (state, action : PayloadAction<{events : UserEvent[], currDate : string}>) => {
             const {events, currDate } = action.payload;
             return {
                  events, currDate
             }
         },
-        updateEvents: (state, action) => {
+        updateEvents: (state, action : PayloadAction<{events: UserEvent[]}>) => {
             state.events = action.payload.events;
         },
+        updateCurrDate : (state, action : PayloadAction<string>) => {
+            state.currDate = action.payload;
+        }
     }
 });
 
 // Export actions
-export const { updateWeek, updateEvents} = weekEventsSlice.actions;
+export const { updateWeek, updateEvents, updateCurrDate} = weekEventsSlice.actions;
 
 // Export reducer
 export default weekEventsSlice.reducer;

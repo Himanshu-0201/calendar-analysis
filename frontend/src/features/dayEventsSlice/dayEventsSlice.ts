@@ -22,20 +22,24 @@ export const dayEventsSlice = createSlice({
     initialState,
     reducers: {
 
-        updateDay: (state, action) => {
+        updateDay: (state, action : PayloadAction<{events : UserEvent[], currDate : string}>) => {
             const {events, currDate } = action.payload;
             return {
                  events, currDate
             }
         },
-        updateEvents: (state, action) => {
+        updateEvents: (state, action : PayloadAction<{events : UserEvent[]}>) => {
             state.events = action.payload.events;
         },
+
+        updateCurrDate : (state, action : PayloadAction<string>) => {
+            state.currDate = action.payload;
+        }
     }
 });
 
 // Export actions
-export const { updateDay, updateEvents} = dayEventsSlice.actions;
+export const { updateDay, updateEvents, updateCurrDate} = dayEventsSlice.actions;
 
 // Export reducer
 export default dayEventsSlice.reducer;

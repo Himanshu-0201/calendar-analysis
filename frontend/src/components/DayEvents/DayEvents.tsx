@@ -14,7 +14,7 @@ const DayEvents = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const currDateStr = useSelector((state: RootState) => state.userInfo.currDate);
+    const currDateStr = useSelector((state: RootState) => state.dayEvents.currDate);
     // const eventsShowTillCurrentTime = useSelector((state: RootState) => state.userInfo.eventsShowTillCurrentTime);
     const eventsList = useSelector((state: RootState) => state.dayEvents.events);
 
