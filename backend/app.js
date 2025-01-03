@@ -5,13 +5,14 @@ import mongoose from 'mongoose';
 import gCalendarRoute from './routes/gcalendar-api.js';
 import authRoute from "./routes/auth-route.js";
 import testRoute from "./routes/test-route.js";
-import emailRoute from "./routes/email-route.js";
 
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 
 import { HOST_PORT, mongoDBUrl, allowedOrigins} from './config.js';
 import handleError from './Errors/Error.js';
+
+import { emailScheduler } from './services/emailScheduler.js';
 
 const app = express();
 
@@ -40,7 +41,6 @@ app.use(cookieParser());
 app.use(testRoute);
 app.use(authRoute);
 app.use(gCalendarRoute);
-app.use(emailRoute);
 
 // handle error for cors
 app.use(handleError);
@@ -55,7 +55,9 @@ mongoose.connect(mongoDBUrl)
     // comment below code  in prod or run locally through versel
 
     app.listen(port, () => {
+      emailScheduler();
       console.log("server has activate st port : " + port);
+      console.log("emails seduled");
     });
 
   })
