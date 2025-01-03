@@ -3,7 +3,7 @@ import { UserEvent } from "../models/UserEventsModels";
 
 
 
-export const isToday = (currDate : Date) => {
+export const isToday = (currDate: Date) => {
     const d1 = new Date();
     const d2 = currDate;
 
@@ -11,7 +11,7 @@ export const isToday = (currDate : Date) => {
     return false;
 }
 
-export const isYesterday = (currDate : Date) => {
+export const isYesterday = (currDate: Date) => {
     const d1 = new Date();
     d1.setDate(d1.getDate() - 1);
     const d2 = currDate;
@@ -62,7 +62,7 @@ interface StartAndEndOfWeekType {
     endOfWeek: Date;
 }
 
-export const getStartAndEndOfWeek = ( date : (string | Date) ) : StartAndEndOfWeekType => {
+export const getStartAndEndOfWeek = (date: (string | Date)): StartAndEndOfWeekType => {
 
     const currentDate = new Date(date);
     const currentDay = currentDate.getDay();
@@ -77,3 +77,36 @@ export const getStartAndEndOfWeek = ( date : (string | Date) ) : StartAndEndOfWe
 
     return { startOfWeek, endOfWeek };
 }
+
+export const getWeekBounds = (date: (string | Date)): { firstDateOfWeek: Date, lastDateOfWeek: Date } => {
+
+    const currDate = new Date(date); // Convert input to Date object
+    if (isNaN(currDate.getTime())) {
+        throw new Error("Invalid date input");
+    }
+
+    const firstDateOfWeek = new Date(currDate); // Clone date
+
+    const dayOfWeek = currDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
+    // Adjust first and last dates
+    firstDateOfWeek.setDate(currDate.getDate() - dayOfWeek);
+
+    const lastDateOfWeek = new Date(firstDateOfWeek); // Clone date
+    lastDateOfWeek.setDate(firstDateOfWeek.getDate() + 6);
+
+    console.log(firstDateOfWeek , " ", lastDateOfWeek);
+
+    return { firstDateOfWeek, lastDateOfWeek };
+}
+
+
+export const getDate = (date: Date | string): string => {
+
+    const currDate = new Date(date);
+    const day = currDate.getDate();
+    const monthName = currDate.toLocaleDateString("en-US", { month: "short" });
+    const dayName = currDate.toLocaleDateString("en-US", { weekday: "short" });
+    return `${dayName}, ${day} ${monthName}`;
+
+};

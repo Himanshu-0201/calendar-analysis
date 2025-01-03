@@ -25,7 +25,7 @@ export const events : Array<UserEvent> = [
     },
     {
         title: "Work",
-        start: "2024-10-29T11:00:00+05:30",
+        start: "2024-10-30T11:00:00+05:30",
         end: "2024-10-30T17:00:00+05:30",
         isImportant: true,
         isUrgent: false

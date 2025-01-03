@@ -5,16 +5,12 @@ import { convertMinutesToHours } from "../../utils/dateUtils.ts";
 import { RootState } from "../../app/store.ts";
 import React from "react";
 
-const TotalTime = ()=>{
+const TotalTime = ({events, eventsShowTillCurrentTime})=>{
 
-    const events = useSelector((state : RootState) => state.userInfo.events);
-    const eventsShowTillCurrentTime = useSelector((state : RootState) => state.userInfo.eventsShowTillCurrentTime);
+    // const events = useSelector((state : RootState) => state.dayEvents.events);
+    // const eventsShowTillCurrentTime = useSelector((state : RootState) => state.userInfo.eventsShowTillCurrentTime);
     const totalTimeSpendInMin = calculateTotalTimeSpend(events, eventsShowTillCurrentTime);
     const totalTimeSpend = convertMinutesToHours(totalTimeSpendInMin);
-
-
-    const isSignedIn = useSelector((state : RootState) => state.userInfo.isSignedIn);
-
 
 
     return (
@@ -25,7 +21,7 @@ const TotalTime = ()=>{
                 <p> Total time registered</p>
             </div>
             <div className="font-bold">
-                <p>{isSignedIn ? totalTimeSpend : "10 Hr 15 Min"}</p>
+                <p>{totalTimeSpend}</p>
             </div>
         </div>
     )
