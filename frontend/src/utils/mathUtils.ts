@@ -416,7 +416,9 @@ export const modifyEventsForTable = (userEvents: UserEvent[], eventsShowTillCurr
         }
     });
 
-    const events : TableEvent [] = eventsArray.map(event => {
+    const events : TableEvent [] = eventsArray
+    .sort((a, b) => b.duration - a.duration) // Sort events by duration
+    .map(event => {
 
         const eventName = event.title;
         const totalTimeSpend = convertMinutesToHours(event.duration);
