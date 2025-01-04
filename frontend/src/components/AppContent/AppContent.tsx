@@ -11,7 +11,8 @@ import { RootState } from "../../app/store.ts";
 import { TbLoader3 } from "react-icons/tb";
 
 
-import { updateUserInfo, userSingOut } from "../../features/userInfoSlice/userInfoSlice.ts";
+import { updateUserInfo } from "../../features/userInfoSlice/userInfoSlice.ts";
+import { handleSingOut } from "../../utils/authUtils.ts";
 
 
 const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTillCurrentTime, updateEvents, loaderClose }) => {
@@ -83,8 +84,7 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
             } catch (error) {
 
                 if (error.response && error.response.status === 401) {
-
-                    dispatch(userSingOut());
+                    handleSingOut();
                 }
                 else {
                     throwError(error);

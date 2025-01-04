@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import config from "../../../config";
-import { userSingOut } from "../../../features/userInfoSlice/userInfoSlice.ts";
+import { handleSingOut } from "../../../utils/authUtils.ts";
 import { useRef } from "react";
 import useOutSideClick from "../../../hooks/useOutSideClick.ts";
 import "./DropDown.scss"
@@ -40,7 +40,7 @@ const DropDown = ({ handleCloseDropDown }) => {
             });
 
             if (response.ok) {
-                dispatch(userSingOut());
+                handleSingOut();
             }
             else {
                 throw new Error("something went wrong");

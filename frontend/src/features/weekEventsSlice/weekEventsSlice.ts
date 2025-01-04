@@ -31,12 +31,16 @@ export const weekEventsSlice = createSlice({
         },
         updateCurrDate : (state, action : PayloadAction<string>) => {
             state.currDate = action.payload;
+        },
+        clearData : (state) => {
+            return initialState
         }
+
     }
 });
 
 // Export actions
-export const { updateWeek, updateEvents, updateCurrDate} = weekEventsSlice.actions;
+export const { updateWeek, updateEvents, updateCurrDate, clearData} = weekEventsSlice.actions;
 
 // Export reducer
 export default weekEventsSlice.reducer;

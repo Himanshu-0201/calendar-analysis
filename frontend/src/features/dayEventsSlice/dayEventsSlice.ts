@@ -34,12 +34,16 @@ export const dayEventsSlice = createSlice({
 
         updateCurrDate : (state, action : PayloadAction<string>) => {
             state.currDate = action.payload;
+        },
+
+        clearData : (state) => {
+            return initialState
         }
     }
 });
 
 // Export actions
-export const { updateDay, updateEvents, updateCurrDate} = dayEventsSlice.actions;
+export const { updateDay, updateEvents, updateCurrDate, clearData} = dayEventsSlice.actions;
 
 // Export reducer
 export default dayEventsSlice.reducer;
