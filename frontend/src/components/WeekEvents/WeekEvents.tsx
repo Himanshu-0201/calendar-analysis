@@ -44,10 +44,8 @@ const WeekEvents = () => {
 
             <LayOut>
 
-                <div>
-                    <Nav />
-                    <WeekTimeZone />
-                </div>
+
+                <WeekTimeZone />
 
                 <AppContent
 

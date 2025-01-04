@@ -161,7 +161,7 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
 
                     :
 
-                    <div className="grid grid-cols-10 gap-4  py-6 bg-gray-50">
+                    <div className="grid grid-cols-10 gap-4  py-6 bg-gray-50 pt-[5px]">
                         {/* Table Section */}
                         <div className="col-span-4 p-4 bg-white rounded-lg shadow-md border">
                             <h2 className="text-lg font-semibold mb-4 text-gray-700">Event Table</h2>

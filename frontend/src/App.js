@@ -8,8 +8,7 @@ import DeniedAccess from "./components/Pages/DeniedAccess/DeniedAccess.tsx";
 import PageNotFound from "./components/Pages/PageNotFound/PageNotFound.tsx";
 import ErrorComponent from "./Errors/Error.tsx";
 import RootLayOut from "./RootLayOut/RootLayOut.tsx";
-import DayEvents from "./components/DayEvents/DayEvents.tsx";
-import WeekEvents from "./components/WeekEvents/WeekEvents.tsx";
+import Dashboard from "./components/DashBoard/DashBoard.tsx";
 
 
 const router = createBrowserRouter([
@@ -19,20 +18,16 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <DayEvents />
+        element: <Dashboard />
       },
       {
         path: "access-denied",
         element: <DeniedAccess />
       },
       {
-        path : "error",
-        element : <ErrorComponent />
+        path: "error",
+        element: <ErrorComponent />
       },
-      {
-        path : "week-events",
-        element : <WeekEvents />
-      }
     ]
   },
   {

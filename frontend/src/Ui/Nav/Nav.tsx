@@ -10,24 +10,25 @@ import { RootState } from "../../app/store.ts";
 
 const Nav = () => {
 
-    const isUserSignedIn = useSelector((state : RootState) => state.userInfo.isSignedIn);
+    const isUserSignedIn = useSelector((state: RootState) => state.userInfo.isSignedIn);
 
 
     return (
-        <div className="border-2 _nav-container">
-            <div className="place-self-end _nav-avatar-container flex items-center space-x-4">
+        <div className="_nav-container flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-gray-800">Google Calendar Analysis</h1>
 
-                {isUserSignedIn ?
+            <div className="place-self-end _nav-avatar-container flex items-center space-x-4">
+                {isUserSignedIn ? (
                     <>
                         <div className="flex items-center space-x-4 border-2 border-gray-300 p-3 rounded-md">
                             <p className="text-gray-700 font-medium">See registered time till now</p>
                             <CheckInCheckOut />
                         </div>
-
                         <Avatar />
                     </>
-
-                    : <SingIn />}
+                ) : (
+                    <SingIn />
+                )}
             </div>
         </div>
 

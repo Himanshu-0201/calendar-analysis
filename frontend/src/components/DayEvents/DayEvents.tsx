@@ -51,20 +51,17 @@ const DayEvents = () => {
 
             <LayOut>
 
-                <div>
-                    <Nav />
-                    <DayTimezone />
-                </div>
+                <DayTimezone />
 
                 <AppContent
 
                     startTime={startStr}
                     endTime={endStr}
                     eventsList={eventsList}
-                    eventsShowTillCurrentTime = {eventsShowTillCurrentTime}
-                    updateEvents = {updateEvents}
+                    eventsShowTillCurrentTime={eventsShowTillCurrentTime}
+                    updateEvents={updateEvents}
                     loaderClose={handleLoaderClose}
-                    currDateStr  = {currDateStr}
+                    currDateStr={currDateStr}
 
                 />
 
