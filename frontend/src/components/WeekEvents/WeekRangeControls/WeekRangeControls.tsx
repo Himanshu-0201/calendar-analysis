@@ -9,6 +9,7 @@ import { updateCurrDate } from "../../../features/weekEventsSlice/weekEventsSlic
 const WeekRangeControls = () => {
 
     const currDate = useSelector((state: RootState) => state.weekEvents.currDate);
+    const isSignedIn = useSelector((state: RootState) => state.userInfo.isSignedIn);
     const dispatch = useDispatch();
 
     const { firstDateOfWeek, lastDateOfWeek } = getWeekBounds(currDate);
@@ -33,6 +34,7 @@ const WeekRangeControls = () => {
     return (
         <div className="flex justify-between items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm text-center">
             <button
+                disabled={!isSignedIn}
                 className="flex items-center px-2 py-2"
                 onClick={decrementWeek}
             >
@@ -42,6 +44,7 @@ const WeekRangeControls = () => {
                 {weekBoundStr}
             </div>
             <button
+                disabled={!isSignedIn}
                 className="flex items-center px-2 py-2"
                 onClick={incrementWeek}
             >
