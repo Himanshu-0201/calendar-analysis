@@ -12,6 +12,8 @@ import cookieParser from 'cookie-parser';
 import { HOST_PORT, mongoDBUrl, allowedOrigins} from './config.js';
 import handleError from './Errors/Error.js';
 
+import { emailScheduler } from './services/emailScheduler.js';
+
 const app = express();
 
 app.use(cors({
@@ -53,7 +55,9 @@ mongoose.connect(mongoDBUrl)
     // comment below code  in prod or run locally through versel
 
     app.listen(port, () => {
+      emailScheduler();
       console.log("server has activate st port : " + port);
+      console.log("emails seduled");
     });
 
   })
