@@ -4,15 +4,16 @@ import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 import User from '../models/User.js';
 import schedule from 'node-schedule';
+import { report } from './reportGenerate.js';
 dotenv.config();
 
 
-const sendEmails = async () => {
+export const sendEmails = async (req, res) => {
 
-    const entries = await User.find();
 
     const sender_email = process.env.EMAIL_ADDRESS;
     const app_pass = process.env.APP_PASSWORD;
+
 
     const transporter = nodemailer.createTransport(
         {
@@ -26,31 +27,39 @@ const sendEmails = async () => {
         }
     );
 
+    const userReportBufferContent = await report();
 
-    entries.forEach(async (entry) => {
 
-        const user_email = entry.email;
+    const mailOptions = {
+        from: sender_email,
+        to: "writetomailhimanshu@gmail.com",
+        subject: 'Weekly Report of Google Calendar Analysis ',
+        text: `Hi ${"Himanshu"}, Please find your weekly report attached.`,
+        attachments: [
+            {
+                filename: "weekly_report.pdf", // Name of the file in the email
+                content: userReportBufferContent,  // The file content as a buffer
+            },
+        ],
+    }
 
-        const mailOptions = {
-            from: sender_email,
-            to: user_email,
-            subject: 'Weekly Report of Google Calendar Analysis',
-            text: "This email is sent to you  for the testing purpose, If you received this email Kindly reply to the same mail which is used to sent this email, Thanks"
+    console.log("");
+    transporter.sendMail(mailOptions, (err, info) => {
+
+        if (err) {
+            const error = new Error(err);
+            throw error;
         }
-
-        transporter.sendMail(mailOptions, (err, info) => {
-
-            if (err) {
-                const error = new Error(err);
-                throw error;
-            }
-            else {
-                // console.log('Email sent: ' + info.response);
+        else {
+            // console.log('Email sent: ' + info.response);
+            if(res){
                 return res.status(200).json({ message: 'Email sent: ' + info.response });
             }
-        })
-
-    });
+            else{
+                return "mail sent to everyone";
+            }
+        }
+    })
 
 }
 
