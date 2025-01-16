@@ -24,6 +24,15 @@ const userSchema = new mongoose.Schema({
     expireDate : {
         type : String,
         require : true
+    },
+    reportSubscription : {
+        type : Boolean,
+        require : true,
+        default : false
+    },
+    reportSubscriptionEmail : {
+        type : String,
+        require : true
     }
 }, { timestamps: true }); // Automatically creates createdAt and updatedAt fields
 

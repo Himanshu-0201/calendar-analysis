@@ -84,7 +84,8 @@ export const succussfullySignIn = async (req, res, next) => {
                     email: userEmail,
                     accessToken: access_token,
                     refreshToken: refresh_token,
-                    expireDate : expiry_date
+                    expireDate : expiry_date,
+                    reportSubscriptionEmail : userEmail // it will same at when user signed In in first
                 })
 
                 const respons = await user.save();
