@@ -29,37 +29,51 @@ export const sendEmails = async (req, res) => {
 
     const userReportBufferContent = await report();
 
+    const users = await User.find({});
 
-    const mailOptions = {
-        from: sender_email,
-        to: "writetomailhimanshu@gmail.com",
-        subject: 'Weekly Report of Google Calendar Analysis ',
-        text: `Hi ${"Himanshu"}, Please find your weekly report attached.`,
-        attachments: [
-            {
-                filename: "weekly_report.pdf", // Name of the file in the email
-                content: userReportBufferContent,  // The file content as a buffer
-            },
-        ],
-    }
 
-    console.log("");
-    transporter.sendMail(mailOptions, (err, info) => {
+    users.forEach(user => {
 
-        if (err) {
-            const error = new Error(err);
-            throw error;
+        const isUserSubscribed = user.reportSubscription;
+
+        if(isUserSubscribed === false) return ;
+
+        const userName = user.username;
+        const userSubscriptionEmail = user.reportSubscriptionEmail;
+
+        const mailOptions = {
+            from: sender_email,
+            to: userSubscriptionEmail,
+            subject: 'Weekly Report of Google Calendar Analysis ',
+            text: `Hi ${userName}, Please find your weekly report attached.`,
+            attachments: [
+                {
+                    filename: "weekly_report.pdf", // Name of the file in the email
+                    content: userReportBufferContent,  // The file content as a buffer
+                },
+            ],
         }
-        else {
-            // console.log('Email sent: ' + info.response);
-            if(res){
-                return res.status(200).json({ message: 'Email sent: ' + info.response });
+
+
+        transporter.sendMail(mailOptions, (err, info) => {
+
+            if (err) {
+                const error = new Error(err);
+                throw error;
             }
-            else{
-                return "mail sent to everyone";
+            else {
+                // console.log('Email sent: ' + info.response);
+                if(res){
+                    return res.status(200).json({ message: 'Email sent: ' + info.response });
+                }
+                else{
+                    return "mail sent to everyone";
+                }
             }
-        }
+        })
+
     })
+
 
 }
 
