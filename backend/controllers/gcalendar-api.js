@@ -102,7 +102,6 @@ export const dayCalendarData = async (req, res, next) => {
 
         } catch (err) {
 
-            console.log(err);
             const error = new Error(err);
             error.statusCode = 403;
             throw error;

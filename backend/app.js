@@ -68,9 +68,6 @@ mongoose.connect(mongoDBUrl)
 
   })
   .catch(error => {
-    // console.log(error);
-    // console.log("unable to connect mongoDB server")
-
     const mongoError = new Error("unable to connect server to the mongoDB");
     mongoError.status = 500;
     mongoError.details = error; 

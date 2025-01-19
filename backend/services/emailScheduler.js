@@ -4,7 +4,8 @@ import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 import User from '../models/User.js';
 import schedule from 'node-schedule';
-import { report } from './reportGenerate.js';
+import { generateTimeReport } from './report/genReport.js';
+
 dotenv.config();
 
 
@@ -27,19 +28,26 @@ export const sendEmails = async (req, res) => {
         }
     );
 
-    const userReportBufferContent = await report();
+    // const userReportBufferContent = await report();
 
     const users = await User.find({});
 
 
-    users.forEach(user => {
+
+    users.forEach(async (user) => {
 
         const isUserSubscribed = user.reportSubscription;
 
-        if(isUserSubscribed === false) return ;
+        if (isUserSubscribed === false) return;
 
+        
         const userName = user.username;
         const userSubscriptionEmail = user.reportSubscriptionEmail;
+        const userEmail = user.email;
+
+        const userReportBufferContent = await generateTimeReport(userEmail);
+
+
 
         const mailOptions = {
             from: sender_email,
@@ -48,12 +56,13 @@ export const sendEmails = async (req, res) => {
             text: `Hi ${userName}, Please find your weekly report attached.`,
             attachments: [
                 {
-                    filename: "weekly_report.pdf", // Name of the file in the email
+                    filename: "weekly_report.pdf", // Name of the file in the
                     content: userReportBufferContent,  // The file content as a buffer
                 },
             ],
         }
 
+        console.log("email sent");
 
         transporter.sendMail(mailOptions, (err, info) => {
 
@@ -63,10 +72,10 @@ export const sendEmails = async (req, res) => {
             }
             else {
                 // console.log('Email sent: ' + info.response);
-                if(res){
+                if (res) {
                     return res.status(200).json({ message: 'Email sent: ' + info.response });
                 }
-                else{
+                else {
                     return "mail sent to everyone";
                 }
             }

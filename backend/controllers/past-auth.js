@@ -135,7 +135,6 @@ export const succussfullySignIn = async (req, res, next) => {
 
 
         } catch (error) {
-            // console.log("problem to crate jwt token");
             return next(error);
         }
 

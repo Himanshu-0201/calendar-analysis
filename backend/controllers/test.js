@@ -64,8 +64,7 @@ export const testSingIn = async (req, res, next) => {
         res.send("user succussfully signed in");
 
     } catch (err) {
-        // console.error('Error storing user data:', error);
-        // res.status(500).json({ message: 'Internal server error' });
+      
 
         const error = new Error(err);
         error.status = 500;
