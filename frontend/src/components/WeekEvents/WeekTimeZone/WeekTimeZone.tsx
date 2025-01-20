@@ -15,7 +15,7 @@ const WeekTimeZone = () => {
 
     return (
         <div className="_week-timezone-container flex flex-col sm:flex-row border-2" >
-            <div className='relative place-self-center'>
+            <div className='relative max-w-[300px]'>
                 <WeekRangeControls />
             </div>
             <div className="sm:ml-auto mt-4 sm:mt-0">
