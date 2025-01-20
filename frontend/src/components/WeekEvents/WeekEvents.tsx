@@ -15,6 +15,8 @@ const WeekEvents = () => {
     const [isLoading, setIsLoading] = useState(true);
     const eventsList = useSelector((state: RootState) => state.weekEvents.events);
     const currDateStr = useSelector((state: RootState) => state.weekEvents.currDate);
+    let eventsShowTillCurrentTime = useSelector((state : RootState) => state.userInfo.eventsShowTillCurrentTime);
+
 
     // Parse the date string to create a Date object
     const { startOfWeek, endOfWeek } = getStartAndEndOfWeek(currDateStr);
@@ -25,7 +27,6 @@ const WeekEvents = () => {
 
     const eventsShowTillCurrentTimeFromCookie = Cookies.get("eventsShowTillCurrentTime") || "false";
 
-    let eventsShowTillCurrentTime = false;
     if (eventsShowTillCurrentTimeFromCookie && eventsShowTillCurrentTimeFromCookie === "true") {
         eventsShowTillCurrentTime = true;
     }

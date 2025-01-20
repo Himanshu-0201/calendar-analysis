@@ -17,6 +17,8 @@ const DayEvents = () => {
     const currDateStr = useSelector((state: RootState) => state.dayEvents.currDate);
     // const eventsShowTillCurrentTime = useSelector((state: RootState) => state.userInfo.eventsShowTillCurrentTime);
     const eventsList = useSelector((state: RootState) => state.dayEvents.events);
+    let eventsShowTillCurrentTime = useSelector((state : RootState) => state.userInfo.eventsShowTillCurrentTime);
+
 
 
     const startTime = new Date(currDateStr);
@@ -30,7 +32,6 @@ const DayEvents = () => {
 
     const eventsShowTillCurrentTimeFromCookie = Cookies.get("eventsShowTillCurrentTime") || "false";
 
-    let eventsShowTillCurrentTime = false
 
     if (eventsShowTillCurrentTimeFromCookie && eventsShowTillCurrentTimeFromCookie === "true") {
         eventsShowTillCurrentTime = true;
