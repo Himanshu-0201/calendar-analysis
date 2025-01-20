@@ -20,13 +20,13 @@ const Dashboard = () => {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 px-8 py-4 pb-0">
+        <div className="min-h-screen bg-gray-100 px-4 sm:px-8 py-4 pb-0">
 
             <Nav />
 
             {/* Header */}
             <div className="mb-6">
-                <div className="flex gap-4">
+                <div className="flex flex-row gap-4 sm:gap-6">
                     <button
                         onClick={() => handleViewChange("day")}
                         className={`px-4 py-2 rounded-lg ${viewMode === "day" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}

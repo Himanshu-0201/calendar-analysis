@@ -56,7 +56,7 @@ const Calendar = () => {
         <div className="relative place-self-center">
             <div className="_calendar-buttons-container flex items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm py-2.5 text-center">
                 {/* Left Arrow */}
-                <div className="w-1/4">
+                <div className="sm:w-1/6 md:w-1/4">
                     <button
                         disabled={!isSignedIn}
                         type="button"
@@ -73,18 +73,18 @@ const Calendar = () => {
                         className="flex items-center space-x-2 cursor-pointer"
                         onClick={() => setDatePickerOpen((prev) => !prev)}
                     >
-                        <span className="whitespace-nowrap">{dayDisplay}</span>
-                        <AiOutlineCalendar className="text-xl" />
+                        <span className="whitespace-nowrap text-xs sm:text-base">{dayDisplay}</span>
+                        <AiOutlineCalendar className="text-lg sm:text-xl" />
                     </button>
                 </div>
 
                 {/* Right Arrow */}
-                <div className="w-1/4">
+                <div className="sm:w-1/6 md:w-1/4">
                     <button
                         disabled={!isSignedIn}
                         type="button"
                         onClick={increaseDate}>
-                        <FaAngleRight />
+                        <FaAngleRight  />
                     </button>
                 </div>
             </div>

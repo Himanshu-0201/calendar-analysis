@@ -15,9 +15,11 @@ const DayTimeZone = () => {
     const eventsShowTillCurrentTime = useSelector((state: RootState) => state.userInfo.eventsShowTillCurrentTime);
 
     return (
-        <div className="_time-zone-container flex border-2" >
-            <Calendar />
-            <div className="self-center ml-auto">
+        <div className="_time-zone-container flex flex-col sm:flex-row border-2" >
+            {/* <div className="flex-1"> */}
+                <Calendar />
+            {/* </div> */}
+            <div className="sm:ml-auto mt-4 sm:mt-0">
                 <TotalTime
                     events={events}
                     eventsShowTillCurrentTime={eventsShowTillCurrentTime}

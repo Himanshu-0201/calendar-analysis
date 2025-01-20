@@ -161,9 +161,9 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
 
                     :
 
-                    <div className="grid grid-cols-10 gap-4  py-6 bg-gray-50 pt-[5px]">
+                    <div className="grid grid-cols-1 gap-4  py-6 bg-gray-50 pt-[5px] md:grid-cols-10">
                         {/* Table Section */}
-                        <div className="col-span-4 p-4 bg-white rounded-lg shadow-md border">
+                        <div className="col-span-1 md:col-span-6 xl:col-span-4  p-4 bg-white rounded-lg shadow-md border">
                             <h2 className="text-lg font-semibold mb-4 text-gray-700">Event Table</h2>
                             <Table
                                 events={tableEvents}
@@ -172,9 +172,9 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
                         </div>
 
                         {/* Charts Section */}
-                        <div className="col-span-6 flex flex-wrap gap-4 justify-between w-full">
+                        <div className="col-span-1 md:col-span-4 xl:col-span-6 flex flex-col xl:flex-row xl:flex-wrap gap-4 justify-between w-full">
                             {/* Pie Chart */}
-                            <div className="flex-1 p-4 bg-white rounded-lg shadow-md border max-w-full">
+                            <div className="flex-1 p-4 bg-white rounded-lg shadow-md border w-full">
                                 <h2 className="text-lg font-semibold mb-4 text-gray-700">Pie Chart</h2>
                                 <div className="_day-pie-chart-container flex justify-center items-center w-full">
                                     <PiChart events={piChartEvents} />
@@ -182,7 +182,7 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
                             </div>
 
                             {/* Matrix Chart */}
-                            <div className="flex-1 p-4 bg-white rounded-lg shadow-md border max-w-full">
+                            <div className="flex-1 p-4 bg-white rounded-lg shadow-md border w-full">
                                 <h2 className="text-lg font-semibold mb-4 text-gray-700">Matrix Chart</h2>
                                 <div className="_day-event_matrix-chart-container flex justify-center items-center w-full">
                                     <MatrixChart MatrixChartData={MatrixChartData} />

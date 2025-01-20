@@ -16,12 +16,12 @@ const TotalTime = ({events, eventsShowTillCurrentTime})=>{
     return (
 
         // #B0C4DE bg color
-        <div className="_total-time flex space-x-4 px-2.5 py-4 border-2 rounded-md">
-            <div className="">
-                <p> Total time registered</p>
+        <div className="_total-time flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 px-2.5 py-4 border-2 rounded-md">
+            <div className="truncate">
+                <p className="text-sm sm:text-base"> Total time registered</p>
             </div>
-            <div className="font-bold">
-                <p>{totalTimeSpend}</p>
+            <div className="font-bold font-bold truncate">
+                <p className="text-base sm:text-lg">{totalTimeSpend}</p>
             </div>
         </div>
     )

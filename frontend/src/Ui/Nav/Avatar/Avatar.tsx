@@ -4,7 +4,7 @@ import "./Avatar.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store.ts";
 
-const Avatar = () => {
+const Avatar = ({prop_class}) => {
 
 
     const [isOpen, setIsOpen] = useState(false);
@@ -21,11 +21,12 @@ const Avatar = () => {
         setIsOpen(false);
     }
 
+    const elementClass = `relative inline-block text-left prop_class ${prop_class}`
 
     return (
         <>
 
-            <div className="relative inline-block text-left">
+            <div className={elementClass}>
 
                 <div className="_avatar relative inline-flex items-center justify-center w-10 h-10 overflow-hidden rounded-full"
                     onClick={toggle}
