@@ -53,7 +53,7 @@ const Calendar = () => {
             : getDate(currDate);
 
     return (
-        <div className="relative place-self-center">
+        <div className="justify-start max-w-[200px] ">
             <div className="_calendar-buttons-container flex items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm py-2.5 text-center">
                 {/* Left Arrow */}
                 <div className="sm:w-1/6 md:w-1/4">

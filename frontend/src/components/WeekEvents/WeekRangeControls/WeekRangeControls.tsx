@@ -32,20 +32,20 @@ const WeekRangeControls = () => {
     };
 
     return (
-        <div className="flex justify-between items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm text-center">
+        <div className="flex flex-row justify-between items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm text-center py-[0.25rem] sm:gap-4 sm:gap-0">
             <button
                 disabled={!isSignedIn}
-                className="flex items-center px-2 py-2"
+                className="flex items-center justify-center px-2 py-2"
                 onClick={decrementWeek}
             >
                 <RiArrowLeftWideFill className="text-xl" />
             </button>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2 text-center">
                 {weekBoundStr}
             </div>
             <button
                 disabled={!isSignedIn}
-                className="flex items-center px-2 py-2"
+                className="flex items-center justify-center px-2 py-2"
                 onClick={incrementWeek}
             >
                 <RiArrowRightWideFill className="text-xl" />

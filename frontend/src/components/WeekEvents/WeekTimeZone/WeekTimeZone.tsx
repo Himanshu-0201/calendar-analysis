@@ -4,6 +4,7 @@ import TotalTime from '../../../Ui/TotalTime/TotalTime.tsx';
 import WeekRangeControls from '../WeekRangeControls/WeekRangeControls.tsx';
 import { RootState } from '../../../app/store.ts';
 import { useSelector } from 'react-redux';
+import "./WeekTimeZone.scss";
 
 const WeekTimeZone = () => {
 
@@ -13,9 +14,11 @@ const WeekTimeZone = () => {
     const eventsShowTillCurrentTime = useSelector((state: RootState) => state.userInfo.eventsShowTillCurrentTime);
 
     return (
-        <div className="_time-zone-container flex border-2" >
-            <WeekRangeControls />
-            <div className="self-center ml-auto">
+        <div className="_week-timezone-container flex flex-col sm:flex-row border-2" >
+            <div className='relative max-w-[300px]'>
+                <WeekRangeControls />
+            </div>
+            <div className="sm:ml-auto mt-4 sm:mt-0">
                 <TotalTime
                     events={events}
                     eventsShowTillCurrentTime={eventsShowTillCurrentTime}

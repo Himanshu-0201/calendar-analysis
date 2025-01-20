@@ -21,7 +21,7 @@ const CheckInCheckOut = () => {
     return (
         <input
             type="checkbox"
-            className="cursor-pointer"
+            className="cursor-pointer !ml-2"
             checked={eventsShowTillCurrentTime}
             onChange={handleChange}
         />
