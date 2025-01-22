@@ -90,13 +90,19 @@ export const dayCalendarData = async (req, res, next) => {
 
             const userEvents = await Promise.all(items.map(async (item) => {
 
-                const title = item.summary;
+                let title = item.summary; 
                 const start = item.start.dateTime;
                 const end = item.end.dateTime;
                 let isImportant = true;
                 let isUrgent = false;
 
                 const query = 'SELECT important, urgent FROM EVENTS WHERE email_id = $1 and event_name = $2';
+
+                if(!title){
+                    title = "No title";
+                }
+
+
                 const params = [userEmail, normalizedTitleFunction(title)];
 
                 const response = await neonSQL(query, params);
