@@ -3,8 +3,18 @@ import { neon } from "@neondatabase/serverless";
 import dotenv from "dotenv";
 dotenv.config();
 
-export const neonSQL = neon(process.env.NEON_DATABASE_URL);
 
+let neonSQL;
+
+try {
+
+    neonSQL = neon(process.env.NEON_DATABASE_URL);
+
+} catch (error) {
+    throw error;
+}
+
+export {neonSQL};
 
 // table name is event,
 
