@@ -8,6 +8,8 @@ function Error() {
 
     const {error} = useContext(ErrorContext);
 
+    console.log(error);
+
     const navigate = useNavigate();
 
     const handleClick = ()=>{

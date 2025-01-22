@@ -71,13 +71,17 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
 
                     dispatch(updateEvents({ events }));
 
+                    setLoading(false);
                 }
 
 
 
             } catch (error) {
 
-                if (error.response && error.response.status === 401) {
+                if (axios.isCancel(error)) {
+                    // nothing to do, 
+                }
+                else if (error.response && error.response.status === 401) {
                     handleSingOut();
                 }
                 else {
@@ -86,7 +90,6 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
             }
             finally {
 
-                setLoading(false);
                 loaderClose();
 
             }
