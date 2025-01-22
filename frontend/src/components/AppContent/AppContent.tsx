@@ -63,13 +63,7 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
                     const userName = data.userName;
                     const resposeEvents = data.events;
 
-                    const events = resposeEvents.map((event) => {
-                        return {
-                            ...event,
-                            isImportant: true,
-                            isUrgent: false
-                        }
-                    });
+                    const events = resposeEvents;
 
                     if (isUserSingedIn === false) {
                         dispatch(updateUserInfo({ name: userName, isSignedIn: true, eventsShowTillCurrentTime }));
@@ -107,33 +101,49 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
 
     }, [currDateStr]);
 
-    // define depandancies
 
 
-    const importantUrgentCheckedBoxChangeHandler = (e, eventTitle, checkboxType) => {
+    const importantUrgentCheckedBoxChangeHandler = async (e, eventTitle: string, checkboxType: string) => {
 
+        const updatedEvents: { event_name: string, isImportant: boolean, isUrgent: boolean }[] = [];
+        const updatedEventsNameSet = new Set<string>();
 
         const events = eventsList.map((event) => {
 
-
-
             if (normalizedTitleFunction(eventTitle) === normalizedTitleFunction(event.title)) {
 
+                let updatedEvent;
 
                 if (checkboxType === "important") {
 
-                    return {
+                    updatedEvent = {
                         ...event,
                         isImportant: e.target.checked
                     }
 
                 }
                 else {
-                    return {
+
+                    updatedEvent = {
                         ...event,
                         isUrgent: e.target.checked
                     }
                 }
+
+                const updatedEventTitle = normalizedTitleFunction(updatedEvent.title);
+
+                if (!updatedEventsNameSet.has(updatedEventTitle)) {
+
+                    updatedEventsNameSet.add(updatedEventTitle);
+                    updatedEvents.push({
+                        event_name: updatedEventTitle || "Default Event",  // Provide fallback value
+                        isImportant: updatedEvent?.isImportant ?? false, // Use nullish coalescing for boolean defaults
+                        isUrgent: updatedEvent?.isUrgent ?? false
+                    });
+
+                }
+
+                return updatedEvent;
             }
             else {
                 return {
@@ -143,8 +153,30 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
 
         });
 
-
         dispatch(updateEvents({ events }));
+
+
+        // update in the db about events
+
+        const requestBody = {
+            eventsList: updatedEvents
+        }
+
+
+        try {
+
+            const response = await axios.post(`http://localhost:8000/update-event-details`, requestBody, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true, // Send cookies with the request
+            });
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
 
     }
 

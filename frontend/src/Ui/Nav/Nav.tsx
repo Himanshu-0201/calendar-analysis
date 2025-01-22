@@ -21,7 +21,7 @@ const Nav = () => {
                 {isUserSignedIn ? (
                     <>
                         <div className="flex items-center space-x-0 sm:space-x-4 border-2 border-gray-300 p-2 sm:p-3 rounded-md mb-4 sm:mb-0 order-2 sm:order-1">
-                            <p className="text-gray-700 font-medium text-sm sm:text-base">See registered time till now</p>
+                            <p className="text-gray-700 font-medium text-sm sm:text-base">See events time till now</p>
                             <CheckInCheckOut />
                         </div>
                         <Avatar prop_class = "order-1 place-self-end sm:rder-2 mb-2"/>

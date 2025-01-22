@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import gCalendarRoute from './routes/gcalendar-api.js';
 import authRoute from "./routes/auth-route.js";
 import userRoute from "./routes/user-route.js";
-import testRoute from "./routes/test-route.js";
+import eventsRoute from "./routes/events-route.js";
 
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
@@ -43,9 +43,9 @@ app.use(cookieParser());
 // Middleware to parse JSON request bodies
 app.use(express.json())
 
-app.use(testRoute);
 app.use(authRoute);
 app.use(gCalendarRoute);
+app.use(eventsRoute);
 app.use(userRoute);
 
 // handle error for cors

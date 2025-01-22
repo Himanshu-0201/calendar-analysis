@@ -3,6 +3,9 @@ import User from "../models/User.js";
 import { isTimeStringUTC } from "../utils/time-util.js";
 import { initializeOAuthClient } from "../utils/google-api-util.js";
 import { getAcessTokenFromRefreshToken } from "../utils/google-api-util.js";
+import { neonSQL } from "../db/neon.js";
+
+import { normalizedTitleFunction } from "../utils/general-utils.js";
 
 
 
@@ -82,20 +85,41 @@ export const dayCalendarData = async (req, res, next) => {
             });
 
             const items = response.data.items;
+  
 
 
-            const userEvents = items.map((item) => {
+            const userEvents = await Promise.all(items.map(async (item) => {
 
                 const title = item.summary;
                 const start = item.start.dateTime;
                 const end = item.end.dateTime;
+                let isImportant = true;
+                let isUrgent = false;
 
+                const query = 'SELECT important, urgent FROM EVENTS WHERE email_id = $1 and event_name = $2';
+                const params = [userEmail, normalizedTitleFunction(title)];
+
+                const response = await neonSQL(query, params);
+                
+
+                if(response && response.length > 0){
+
+                    const {important: IsEventImportant, urgent: IsEventUrgent} = response[0];
+
+                    isImportant = IsEventImportant;
+                    isUrgent = IsEventUrgent;
+
+                }
+ 
                 return {
                     title: title,
                     start: start,
-                    end: end
-                }
-            });
+                    end: end,
+                    isImportant : isImportant,
+                    isUrgent : isUrgent
+                };
+
+            }));
 
 
             return res.json({ userName: user.username, events: userEvents });
@@ -112,7 +136,7 @@ export const dayCalendarData = async (req, res, next) => {
         next(error);
     }
 
-}
+} 
 
 export const weekEventsCalendarData = async (req, res, next) => {
 

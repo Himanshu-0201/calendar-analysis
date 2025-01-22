@@ -6,6 +6,8 @@
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
+const EVENT_DETAILS_UPDATE_API="http://localhost:8000/update-event-details";
+
 const config = {
     BASE_URL: BASE_URL, // Base URL for your backend
     test  : {
