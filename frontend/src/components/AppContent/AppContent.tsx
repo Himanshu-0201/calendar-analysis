@@ -82,6 +82,7 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
                     // nothing to do, 
                 }
                 else if (error.response && error.response.status === 401) {
+                    setLoading(false);
                     handleSingOut();
                 }
                 else {
