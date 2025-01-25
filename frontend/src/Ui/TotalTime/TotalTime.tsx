@@ -9,9 +9,8 @@ const TotalTime = ({events, eventsShowTillCurrentTime})=>{
 
     // const events = useSelector((state : RootState) => state.dayEvents.events);
     // const eventsShowTillCurrentTime = useSelector((state : RootState) => state.userInfo.eventsShowTillCurrentTime);
-    const totalTimeSpendInMin = calculateTotalTimeSpend(events, eventsShowTillCurrentTime);
+    const totalTimeSpendInMin = Math.round(calculateTotalTimeSpend(events, eventsShowTillCurrentTime));
     const totalTimeSpend = convertMinutesToHours(totalTimeSpendInMin);
-
 
     return (
 

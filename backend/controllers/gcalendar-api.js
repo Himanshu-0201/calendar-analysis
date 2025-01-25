@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 import User from "../models/User.js";
-import { isTimeStringUTC } from "../utils/time-util.js";
+import { isTimeStringUTC , findMinTime, findMaxTime} from "../utils/time-util.js";
 import { initializeOAuthClient } from "../utils/google-api-util.js";
 import { getAcessTokenFromRefreshToken } from "../utils/google-api-util.js";
 import { neonSQL } from "../db/neon.js";
@@ -82,6 +82,7 @@ export const dayCalendarData = async (req, res, next) => {
                 timeMax: endTime.toISOString(),
                 singleEvents: true,
                 orderBy: 'startTime',
+                timeZone: 'UTC',
             });
 
             const items = response.data.items;
@@ -108,7 +109,7 @@ export const dayCalendarData = async (req, res, next) => {
                 const response = await neonSQL(query, params);
                 
 
-                if(response && response.length > 0){
+                if(response && response.length > 0){ 
 
                     const {important: IsEventImportant, urgent: IsEventUrgent} = response[0];
 
@@ -116,11 +117,16 @@ export const dayCalendarData = async (req, res, next) => {
                     isUrgent = IsEventUrgent;
 
                 }
+
+
+                const updatedEventStartTime =  findMaxTime(startTime, start);
+                const updatedEventEndTime = findMinTime(endTime, end);
+
  
                 return {
                     title: title,
-                    start: start,
-                    end: end,
+                    start: updatedEventStartTime,
+                    end: updatedEventEndTime,
                     isImportant : isImportant,
                     isUrgent : isUrgent
                 };
