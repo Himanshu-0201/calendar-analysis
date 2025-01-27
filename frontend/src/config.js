@@ -6,7 +6,7 @@
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const event_details_update_api=`${BASE_URL}update-event-details`;
+export const event_details_update_api=`${BASE_URL}/update-event-details`;
 
 export const update_user_info_url = `${BASE_URL}/update-userinfo`;
 
