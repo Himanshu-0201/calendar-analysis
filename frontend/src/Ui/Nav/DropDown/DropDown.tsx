@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import config from "../../../config";
 import { handleSingOut } from "../../../utils/authUtils.ts";
@@ -7,6 +7,7 @@ import useOutSideClick from "../../../hooks/useOutSideClick.ts";
 import "./DropDown.scss"
 import { useError } from "../../../hooks/useError.ts";
 import { RootState } from "../../../app/store.ts";
+import Settings from "../../../components/Settings/Settings.tsx";
 
 
 
@@ -14,9 +15,11 @@ const DropDown = ({ handleCloseDropDown }) => {
 
     // make it more correct , you shouldn't define it like this
     const { throwError = (error: any) => console.error("throwError is undefined", error) } = useError();
-    const userName = useSelector((state : RootState) => state.userInfo.name);
+    const userName = useSelector((state: RootState) => state.userInfo.name);
     const dispatch = useDispatch();
     const dropDownRef = useRef(null);
+
+    const [openSetting, setOpenSetting] = useState<Boolean>(false);
 
 
 
@@ -47,9 +50,17 @@ const DropDown = ({ handleCloseDropDown }) => {
             }
 
         } catch (error) {
-           throwError(error);
+            throwError(error);
         }
 
+    }
+
+    const openSettings = () => {
+        setOpenSetting(true);
+    }
+
+    const closeSettings = () => {
+        setOpenSetting(false);
     }
 
 
@@ -66,14 +77,16 @@ const DropDown = ({ handleCloseDropDown }) => {
 
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationButton">
                 {/* <li>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-            </li>
-            <li>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-            </li>
-            <li>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-            </li> */}
+
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                </li> */}
+                <li>
+                    {openSetting && <Settings onCloseSettings={closeSettings} />}
+                    <p onClick={openSettings} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer ">Settings</p>
+                </li>
+                {/* <li>
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                </li> */}
             </ul>
 
             <div className="py-2 border-t border-gray-200">

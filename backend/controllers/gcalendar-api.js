@@ -22,6 +22,8 @@ export const dayCalendarData = async (req, res, next) => {
         let access_token = user.accessToken;
         const refresh_token = user.refreshToken;
         const expiry_date = user.expireDate;
+        const reportSubscriptionEmail = user.reportSubscriptionEmail;
+        const reportSubscriptionStatue = user.reportSubscriptionStatue;
 
 
         let auth = await initializeOAuthClient(access_token, refresh_token, expiry_date);
@@ -134,7 +136,7 @@ export const dayCalendarData = async (req, res, next) => {
             }));
 
 
-            return res.json({ userName: user.username, events: userEvents });
+            return res.json({ userName: user.username, userEmail , reportSubscriptionEmail, events: userEvents,  reportSubscriptionStatue });
 
         } catch (err) {
 

@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
         type : String,
         require : true
     },
-    reportSubscription : {
+    reportSubscriptionStatue : {
         type : Boolean,
         require : true,
         default : false

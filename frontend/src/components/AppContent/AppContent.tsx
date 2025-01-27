@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import config from "../../config.js";
+import config, { event_details_update_api } from "../../config.js";
 import axios from "axios";
 import { useError } from "../../hooks/useError.ts";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,18 +55,19 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
                     timeout: 60000
                 })
 
-
                 if (response.status === 200) {
 
                     const data = response.data;
 
                     const userName = data.userName;
                     const resposeEvents = data.events;
+                    const userEmail = data.userEmail;
+                    const reportSubscriptionEmail = data.reportSubscriptionEmail;
 
                     const events = resposeEvents;
 
                     if (isUserSingedIn === false) {
-                        dispatch(updateUserInfo({ name: userName, isSignedIn: true, eventsShowTillCurrentTime }));
+                        dispatch(updateUserInfo({ name: userName, isSignedIn: true, eventsShowTillCurrentTime, userEmail, reportSubscriptionEmail }));
                     }
 
                     dispatch(updateEvents({ events }));
@@ -169,7 +170,7 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
 
         try {
 
-            const response = await axios.post(`http://localhost:8000/update-event-details`, requestBody, {
+            const response = await axios.post(event_details_update_api, requestBody, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -177,9 +178,7 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
             });
 
         } catch (error) {
-
-            console.log(error);
-
+            throwError(error);
         }
 
     }

@@ -36,7 +36,7 @@ export const sendEmails = async (req, res) => {
 
     users.forEach(async (user) => {
 
-        const isUserSubscribed = user.reportSubscription;
+        const isUserSubscribed = user.reportSubscriptionStatue;
 
         if (isUserSubscribed === false) return;
 

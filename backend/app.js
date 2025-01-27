@@ -30,7 +30,7 @@ app.use(cors({
       callback(error);
     }
   },
-  methods: "GET,POST,DELETE,PUT",
+  methods: "GET,POST,DELETE,PUT,PATCH",
   credentials: true,
   exposedHeaders: 'Content-Disposition'
 }));
