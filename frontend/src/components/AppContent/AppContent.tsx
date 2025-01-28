@@ -63,11 +63,12 @@ const AppContent = ({ startTime, endTime, currDateStr, eventsList, eventsShowTil
                     const resposeEvents = data.events;
                     const userEmail = data.userEmail;
                     const reportSubscriptionEmail = data.reportSubscriptionEmail;
+                    const reportSubscriptionStatue = data.reportSubscriptionStatue;
 
                     const events = resposeEvents;
 
                     if (isUserSingedIn === false) {
-                        dispatch(updateUserInfo({ name: userName, isSignedIn: true, eventsShowTillCurrentTime, userEmail, reportSubscriptionEmail }));
+                        dispatch(updateUserInfo({ name: userName, isSignedIn: true, eventsShowTillCurrentTime, userEmail, reportSubscriptionEmail , reportSubscriptionStatue }));
                     }
 
                     dispatch(updateEvents({ events }));
