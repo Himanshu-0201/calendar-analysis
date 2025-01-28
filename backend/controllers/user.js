@@ -82,10 +82,9 @@ export const updateUserInfo = async (req, res) => {
     const userEmail = req.user.email;
    
     const {reportSubscriptionEmail , reportSubscriptionStatue } = req.body;
-   
-
-
-    if(!reportSubscriptionEmail || !reportSubscriptionStatue ){
+    
+    
+    if(!reportSubscriptionEmail || reportSubscriptionStatue === undefined || reportSubscriptionStatue === null){
         throw new Error("report email or subscribe weekly not provided");
     }
 
