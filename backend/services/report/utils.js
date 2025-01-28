@@ -42,8 +42,10 @@ export const defineDate = () => {
 
     const dayOfCurrDate = currDate.getDay();
 
+
+
     const firstDateOfWeek = new Date(currDate);
-    firstDateOfWeek.setDate(firstDateOfWeek.getDate() - dayOfCurrDate);
+    firstDateOfWeek.setDate(firstDateOfWeek.getDate() - dayOfCurrDate - 7);
     firstDateOfWeek.setHours(0, 0, 0);
 
     const lastDateOfWeek = new Date(firstDateOfWeek);
@@ -67,9 +69,18 @@ export const updateEventsList = (eventsList) => {
         const startTime = new Date(event.start);
         const endTime = new Date(event.end);
         const duration = (endTime.getTime() - startTime.getTime()) / 1000 / 60; // duration in minutes
+        const title = event.title;
 
 
-        const normalizedTitle = normalizedTitleFunction(event.title);
+        let normalizedTitle;
+
+        if (!title) {
+            normalizedTitle = normalizedTitleFunction("No title")
+        }
+        else {
+            normalizedTitle = normalizedTitleFunction(title);
+        }
+
 
         const existingEntry = updatedEventsList.find(entry => entry.title === normalizedTitle);
 
@@ -104,3 +115,24 @@ export const updateEventsList = (eventsList) => {
     return finalUpdatedEventsList;
 
 }
+
+
+export const countTotalTime = (eventsList) => {
+
+    const totalDuration = eventsList.reduce((accumulator, event) => {
+
+        const startTime = new Date(event.start);
+        const endTime = new Date(event.end);
+        const duration = (endTime.getTime() - startTime.getTime()) / 1000 / 60; // 
+
+        return accumulator + duration;
+
+    }, 0);
+
+
+    const totalTime = convertMinutesToHours(totalDuration);
+
+
+    return totalTime;
+
+};

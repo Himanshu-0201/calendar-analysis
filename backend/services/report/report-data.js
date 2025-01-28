@@ -4,7 +4,7 @@ import { google } from "googleapis";
 
 import { getAcessTokenFromRefreshToken } from "../../utils/google-api-util.js";
 import { isTimeStringUTC } from "../../utils/time-util.js";
-import { updateEventsList } from "./utils.js";
+import { countTotalTime, updateEventsList } from "./utils.js";
 
 
 
@@ -111,5 +111,8 @@ export const getReportData = async (userEmail, start, end)=>{
     const eventsList = await getDataFromGoogleApi(userEmail, start, end);
     const updatedEventsList = updateEventsList(eventsList);
 
-    return updatedEventsList;
+    const totalRegisterTime = countTotalTime(eventsList);
+
+
+    return {updatedEventsList, totalRegisterTime};
 }

@@ -6,6 +6,7 @@ import gCalendarRoute from './routes/gcalendar-api.js';
 import authRoute from "./routes/auth-route.js";
 import userRoute from "./routes/user-route.js";
 import eventsRoute from "./routes/events-route.js";
+import testApi from "./routes/test-api.js";
 
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
@@ -43,6 +44,7 @@ app.use(cookieParser());
 // Middleware to parse JSON request bodies
 app.use(express.json())
 
+app.use(testApi);
 app.use(authRoute);
 app.use(gCalendarRoute);
 app.use(eventsRoute);

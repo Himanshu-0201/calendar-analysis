@@ -6,16 +6,15 @@ import { defineDate, formateDate } from "./utils.js";
 
 
 
-const username = "Himanshu Nagar";
 const left_margin = 15;
 
 
-export const generateTimeReport = async (useremail) => {
+export const generateTimeReport = async (userEmail, userName) => {
 
 
     const { firstDateOfWeek, lastDateOfWeek } = defineDate();
 
-    const reportData = await getReportData(useremail, firstDateOfWeek, lastDateOfWeek);
+    const { updatedEventsList: reportData, totalRegisterTime } = await getReportData(userEmail, firstDateOfWeek, lastDateOfWeek);
 
     const formatedFirstWeekDate = formateDate(firstDateOfWeek);
     const formatedLasteWeekDate = formateDate(lastDateOfWeek);
@@ -49,9 +48,21 @@ export const generateTimeReport = async (useremail) => {
 
         doc.fontSize(45).fillColor('#1967c6').text('Weekly Time Report', { align: 'left' });
 
-        doc.font('Helvetica').fontSize(16).fillColor('black').text(`Name - ${username}`, { align: 'left' });
+        doc.font('Helvetica').fontSize(16).fillColor('black').text(`Name - ${userName}`, { align: 'left' });
 
         doc.fontSize(12).text(`Week - ${weekStr}`, { align: 'left' });
+
+        doc.moveDown(0.5);
+        doc.fontSize(12).text(`Total time register :  ${totalRegisterTime}`, { align: 'left' });
+
+        if (reportData.length === 0) {
+
+            doc.moveDown(3); // Move down 6 lines
+            doc.fontSize(14).fillColor('red').text("No data available for the selected week.", { align: 'left', margin: 20 });
+            doc.end();
+
+            return;
+        }
 
         let isTableHeader = true;
 
