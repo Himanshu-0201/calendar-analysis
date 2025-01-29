@@ -55,3 +55,9 @@ export const allowedOrigins = [
 // to generate access token
 
 export const google_access_token_gererate_uri = "https://oauth2.googleapis.com/token";
+
+
+
+// admin email
+
+export const admin_email = process.env.EMAIL_ADDRESS;

@@ -1,4 +1,5 @@
 import { FAILED_AUTH } from "../config.js";
+import { errorMail } from "./ErrorMail.js";
 
 const handleError = (err, req, res, next) => {
 
@@ -16,6 +17,10 @@ const handleError = (err, req, res, next) => {
         console.log("Auth failed");
     }
     else{
+
+        console.log("error in handleError function");
+
+        errorMail(errorMessage);
         console.log(err);
     }
 

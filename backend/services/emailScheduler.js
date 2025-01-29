@@ -10,6 +10,7 @@ import { generateTimeReport } from './report/genReport.js';
 import { defineDate, formateDate } from './report/utils.js';
 
 import { getReportData } from './report/report-data.js';
+import { errorMail } from '../Errors/ErrorMail.js';
 
 dotenv.config();
 
@@ -36,7 +37,7 @@ export const sendEmails = async (req, res) => {
     // const userReportBufferContent = await report();
 
     const users = await User.find({});
-
+    const failedEmailUsers = [];
 
 
     users.forEach(async (user) => {
@@ -50,43 +51,62 @@ export const sendEmails = async (req, res) => {
         const userSubscriptionEmail = user.reportSubscriptionEmail;
         const userEmail = user.email;
 
-        const userReportBufferContent = await generateTimeReport(userEmail, userName);
+
+        try {
 
 
+            const userReportBufferContent = await generateTimeReport(userEmail, userName);
 
-        const mailOptions = {
-            from: sender_email,
-            to: userSubscriptionEmail,
-            subject: 'Weekly Report of Google Calendar Analysis ',
-            text: `Hi ${userName}, Please find your weekly report attached.`,
-            attachments: [
-                {
-                    filename: "weekly_report.pdf", // Name of the file in the
-                    content: userReportBufferContent,  // The file content as a buffer
-                },
-            ],
-        }
-
-        console.log("email sent");
-
-        transporter.sendMail(mailOptions, (err, info) => {
-
-            if (err) {
-                const error = new Error(err);
-                throw error;
+            const mailOptions = {
+                from: sender_email,
+                to: userSubscriptionEmail,
+                subject: 'Weekly Report of Google Calendar Analysis ',
+                text: `Hi ${userName}, Please find your weekly report attached.`,
+                attachments: [
+                    {
+                        filename: "weekly_report.pdf", // Name of the file in the
+                        content: userReportBufferContent,  // The file content as a buffer
+                    },
+                ],
             }
-            else {
-                // console.log('Email sent: ' + info.response);
-                if (res) {
-                    return res.status(200).json({ message: 'Email sent: ' + info.response });
+
+            transporter.sendMail(mailOptions, (err, info) => {
+
+                if (err) {
+                    const error = new Error(err);
+                    throw error;
                 }
                 else {
-                    return "mail sent to everyone";
+                    // console.log('Email sent: ' + info.response);
+                    if (res) {
+                        return res.status(200).json({ message: 'Email sent: ' + info.response });
+                    }
+                    else {
+                        return "mail sent to everyone";
+                    }
                 }
-            }
-        })
+            });
 
+            console.log("email sent");
+
+
+
+        } catch (err) {
+
+            const error = new Error(err);
+            error.status = 500;
+            error.message = "failed to send email";
+
+            failedEmailUsers.push({userEmail, error});
+
+        }
     })
+
+
+    if (failedEmailUsers.length > 0) {
+        const length = failedEmailUsers.length;
+        errorMail(`Failed to send email to ${length} users`);
+    }
 
 
 }
@@ -147,7 +167,7 @@ export const testReport = async (req, res) => {
 
     doc.fontSize(12).text(`Week - ${weekStr}`, { align: 'left' });
 
-    doc.moveDown(0.5); 
+    doc.moveDown(0.5);
     doc.fontSize(12).text(`Total time register :  ${totalRegisterTime}`, { align: 'left' });
 
     if (reportData.length === 0) {
