@@ -1,4 +1,4 @@
-import { errorMail } from "./ErrorMail";
+import { errorMail } from "./ErrorMail.js";
 
 
 const handleErrorWithoutApiCall = (err) => {

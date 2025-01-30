@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 
 import dotenv from "dotenv";
-import handleErrorWithoutApiCall from "../Errors/ErrorWithoutApiCall";
+import handleErrorWithoutApiCall from "../Errors/ErrorWithoutApiCall.js";
 dotenv.config();
 
 
