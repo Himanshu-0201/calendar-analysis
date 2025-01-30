@@ -5,6 +5,7 @@ import { google } from "googleapis";
 import { getAcessTokenFromRefreshToken } from "../../utils/google-api-util.js";
 import { isTimeStringUTC } from "../../utils/time-util.js";
 import { countTotalTime, updateEventsList } from "./utils.js";
+import handleErrorWithoutApiCall from "../../Errors/ErrorWithoutApiCall.js";
 
 
 
@@ -97,22 +98,30 @@ const getDataFromGoogleApi = async (userEmail, start, end) => {
 
 
     } catch (error) {
-
-
         throw error;
-
     }
 
 }
 
 
-export const getReportData = async (userEmail, start, end)=>{
+export const getReportData = async (userEmail, start, end) => {
 
-    const eventsList = await getDataFromGoogleApi(userEmail, start, end);
-    const updatedEventsList = updateEventsList(eventsList);
+    let eventsList;
+    let updatedEventsList;
 
-    const totalRegisterTime = countTotalTime(eventsList);
+    let totalRegisterTime;
 
 
-    return {updatedEventsList, totalRegisterTime};
+    try {
+
+        eventsList = await getDataFromGoogleApi(userEmail, start, end);
+        updatedEventsList = updateEventsList(eventsList);
+        totalRegisterTime = countTotalTime(eventsList);
+
+    } catch (error) {
+        error.message = "Failed to generate report data";
+        handleErrorWithoutApiCall(error);
+    }
+
+    return { updatedEventsList, totalRegisterTime };
 }

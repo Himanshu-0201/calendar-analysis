@@ -1,7 +1,7 @@
 import { neonSQL } from "../db/neon.js";
 
 
-export const updateUserEventsDetails = async (req, res) => { 
+export const updateUserEventsDetails = async (req, res, next) => { 
 
     const userEmail = req.user.email;
     const eventsList = req.body.eventsList; // here only data come which updated;
@@ -17,7 +17,9 @@ export const updateUserEventsDetails = async (req, res) => {
         return res.status(200).json({ message: "all events details updated succussfully" });
 
     } catch (error) {
-        throw new Error(error)
+        const err = new Error(error);
+        err.message = "Error while updating events details";
+        next(err);
     }
 
 };

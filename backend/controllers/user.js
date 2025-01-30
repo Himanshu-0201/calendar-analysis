@@ -1,7 +1,7 @@
 
 import User from "../models/User.js";
 
-export const updateReportEmail = async (req, res) => {
+export const updateReportEmail = async (req, res, next) => {
 
     const userEmail = req.user.email;
     const reportSubscriptionEmail = req.body.reportSubscriptionEmail;
@@ -31,8 +31,11 @@ export const updateReportEmail = async (req, res) => {
         return res.status(200).json({ message: "report subscription email updated succussfully" })
 
 
-    } catch (error) {
-        throw error;
+    } catch (err) {
+
+        const error = new Error(err);
+        error.message = "Error while updating report email";
+        next(error);
     }
 
 };
@@ -68,9 +71,10 @@ export const updateReportSubscription = async (req, res) => {
 
         return res.status(200).json({ message: "report subscription status updated succussfully" })
 
-    } catch (error) {
-
-        throw error;
+    } catch (err) {
+        const error = new Error(err);
+        error.message = "Error while updating report email";
+        next(error);
 
     }
 
@@ -80,11 +84,11 @@ export const updateReportSubscription = async (req, res) => {
 export const updateUserInfo = async (req, res) => {
 
     const userEmail = req.user.email;
-   
-    const {reportSubscriptionEmail , reportSubscriptionStatue } = req.body;
-    
-    
-    if(!reportSubscriptionEmail || reportSubscriptionStatue === undefined || reportSubscriptionStatue === null){
+
+    const { reportSubscriptionEmail, reportSubscriptionStatue } = req.body;
+
+
+    if (!reportSubscriptionEmail || reportSubscriptionStatue === undefined || reportSubscriptionStatue === null) {
         throw new Error("report email or subscribe weekly not provided");
     }
 
@@ -96,7 +100,7 @@ export const updateUserInfo = async (req, res) => {
 
         const user = await User.findOneAndUpdate(
             filter,
-            { reportSubscriptionEmail: reportSubscriptionEmail , reportSubscriptionStatue: reportSubscriptionStatue }
+            { reportSubscriptionEmail: reportSubscriptionEmail, reportSubscriptionStatue: reportSubscriptionStatue }
         );
 
         if (!user) {
@@ -105,8 +109,10 @@ export const updateUserInfo = async (req, res) => {
 
         return res.status(200).json({ message: "user info updated successfully" });
 
-    } catch (error) {
-        throw error;
+    } catch (err) {
+        const error = new Error(err);
+        error.message = "Error while updating report email";
+        next(error);
     }
 
 }

@@ -37,7 +37,8 @@ export const errorMail = (errorMessage) => {
 
         if (err) {
             const error = new Error(err);
-            throw error;
+            // throw error;
+            console.log("failed to error send mail");
         }
         else {
             // console.log('Email sent: ' + info.response);
