@@ -94,7 +94,7 @@ export const sendEmails = async (req, res) => {
 
 
 export const emailScheduler = async () => {
-    schedule.scheduleJob({ hour: 10, minute: 0 }, sendEmails);
+    schedule.scheduleJob({ hour: 22, minute: 0 }, sendEmails);
 }
 
 
