@@ -2,15 +2,34 @@ import React from "react";
 import CheckBox from "../../Ui/CheckBox/CheckBox.tsx";
 
 
+type TableProps = {
+    events: {
+        eventName: string,
+        totalTimeSpend: string,
+        isImportant: boolean,
+        isUrgent: boolean
+    }[],
+    importantUrgentCheckedBoxChangeHandler: (e: React.ChangeEvent<HTMLInputElement>, eventName: string, type: string) => void,
+    rowClickHandler: (eventName: string) => void
+}
 
-const Table = ({ events, importantUrgentCheckedBoxChangeHandler }) => {
+const Table: React.FC<TableProps> = ({ events, importantUrgentCheckedBoxChangeHandler, rowClickHandler }) => {
+
+    const clickHandler = (e: React.MouseEvent<HTMLTableRowElement>, title: string) => {
+
+        const target = e.target as HTMLInputElement; // Type assertion
+        if (target.type || target.type === "checkbox") return;
+
+        rowClickHandler(title)
+
+    }
 
     const tableEventsData = events ? events : [];
 
 
     const tableDate = tableEventsData.map((event, index) => {
         return (
-            <tr key={index}>
+            <tr key={index} className="hover:bg-gray-50 cursor-pointer" onClick={(e) => { clickHandler(e, event.eventName); }}>
                 <td className="border border-slate-300 text-center p-4">{event.eventName}</td>
                 <td className="border border-slate-300 text-center p-4">{event.totalTimeSpend}</td>
                 <td className="border border-slate-300 text-center p-4">  {/* Important */}

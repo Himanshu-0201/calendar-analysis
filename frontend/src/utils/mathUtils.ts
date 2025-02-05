@@ -3,6 +3,7 @@ import { TableEvent } from "../models/UserEventsModels.ts";
 import { MatrixChartProp, PiChartEventType } from "../models/ChartModels.ts";
 import { UserEvent } from "../models/UserEventsModels.ts";
 import { convertMinutesToHours, splitTimeTillCurrentTime } from "./dateUtils.ts";
+import { OverlayTableElement, OverlayTableEventsEvent } from "../models/TablesModels";
 
 
 export const normalizedTitleFunction = (title: string): string => {
@@ -87,7 +88,7 @@ export const modifyEventsForMatrixChart = (userEvents: UserEvent[], eventsShowTi
 }
 
 // this is for cal time only
-export const calculateTotalTimeSpend = (events : UserEvent[], eventsShowTillCurrentTime : boolean) => {
+export const calculateTotalTimeSpend = (events: UserEvent[], eventsShowTillCurrentTime: boolean) => {
 
     let totalTime = 0;
 
@@ -109,7 +110,7 @@ export const calculateTotalTimeSpend = (events : UserEvent[], eventsShowTillCurr
 }
 
 
-export const modifyEventsForTable = (userEvents: UserEvent[], eventsShowTillCurrentTime: boolean): TableEvent [] => {
+export const modifyEventsForTable = (userEvents: UserEvent[], eventsShowTillCurrentTime: boolean): TableEvent[] => {
 
     let updatedUserEvents: UserEvent[] = [];
 
@@ -150,21 +151,21 @@ export const modifyEventsForTable = (userEvents: UserEvent[], eventsShowTillCurr
         }
     });
 
-    const events : TableEvent [] = eventsArray
-    .sort((a, b) => b.duration - a.duration) // Sort events by duration
-    .map(event => {
+    const events: TableEvent[] = eventsArray
+        .sort((a, b) => b.duration - a.duration) // Sort events by duration
+        .map(event => {
 
-        const eventName = event.title;
-        const totalTimeSpend = convertMinutesToHours(event.duration);
+            const eventName = event.title;
+            const totalTimeSpend = convertMinutesToHours(event.duration);
 
-        return {
-            eventName,
-            totalTimeSpend,
-            isImportant: event.isImportant,
-            isUrgent: event.isUrgent
-        }
+            return {
+                eventName,
+                totalTimeSpend,
+                isImportant: event.isImportant,
+                isUrgent: event.isUrgent
+            }
 
-    });
+        });
 
 
     return events;
@@ -173,9 +174,9 @@ export const modifyEventsForTable = (userEvents: UserEvent[], eventsShowTillCurr
 
 
 
-export const modifyEventsForPieChart = (userEvents : UserEvent [], eventsShowTillCurrentTime : boolean) : PiChartEventType [] => {
+export const modifyEventsForPieChart = (userEvents: UserEvent[], eventsShowTillCurrentTime: boolean): PiChartEventType[] => {
 
-    let updatedUserEvents : UserEvent[] = [];
+    let updatedUserEvents: UserEvent[] = [];
 
     if (eventsShowTillCurrentTime) {
 
@@ -186,7 +187,7 @@ export const modifyEventsForPieChart = (userEvents : UserEvent [], eventsShowTil
     }
 
 
-    const eventsArray : PiChartEventType []= [];
+    const eventsArray: PiChartEventType[] = [];
 
     updatedUserEvents.forEach(event => {
 
@@ -216,6 +217,99 @@ export const modifyEventsForPieChart = (userEvents : UserEvent [], eventsShowTil
 
     return eventsArray;
 }
+
+const convertUtcToLocalTime = (utcTimeString: string) => {
+    const date = new Date(utcTimeString);
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    const period = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for midnight and use modulo for 12-hour format
+
+    return `${hours}:${minutes} ${period}`;
+};
+
+const formatDateToReadable = (dateString: string): string => {
+    const date = new Date(dateString);
+
+    const options: Intl.DateTimeFormatOptions = {
+        weekday: 'short',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    };
+
+    return date.toLocaleDateString('en-US', options);
+};
+
+const calculateDurationInMinutes = (start: string, end: string): number => {
+
+    const st = new Date(start);
+    const ed = new Date(end);
+
+    const duration = (ed.getTime() - st.getTime()) / 1000 / 60;
+
+    return duration;
+}
+
+
+
+
+const filterEventsByTitle = (events: UserEvent[], title: string): UserEvent[] => {
+
+    const normalizedTitle = normalizedTitleFunction(title);
+
+    const eventsByTitle: UserEvent[] = [];
+
+    events.forEach(event => {
+        if (normalizedTitleFunction(event.title) === normalizedTitle) {
+            eventsByTitle.push(event);
+        }
+    });
+
+    return eventsByTitle;
+}
+
+export const modifyEventsForOverlayTable = (events: UserEvent[], title: string) : OverlayTableElement [] => {
+
+    const eventsByTitle = filterEventsByTitle(events, title);
+    // const eventsByDate = groupsEventsByDate(eventsByTitle);
+
+    const groupedEvents: { [key: string]: { events: OverlayTableEventsEvent [], totalDuration: number } } = {};
+
+    eventsByTitle.forEach((event) => {
+        const eventDate = formatDateToReadable(event.start); // Extract the date part from the start
+        if (!groupedEvents[eventDate]) {
+            groupedEvents[eventDate] = { events: [], totalDuration: 0 };
+        }
+
+        // Calculate event duration in minutes if not already provided
+        const duration = calculateDurationInMinutes(event.start, event.end);
+
+
+        groupedEvents[eventDate].events.push({
+            start: convertUtcToLocalTime(event.start),
+            end: convertUtcToLocalTime(event.end),
+            duration: convertMinutesToHours(duration),
+        });
+
+        groupedEvents[eventDate].totalDuration += duration;
+    });
+
+    // Convert the grouped events object into an array of dates with their corresponding events
+    const updatedUserEvents = Object.keys(groupedEvents).map(date => ({
+        date,
+        title : normalizedTitleFunction(title),
+        totalDurationForDay: convertMinutesToHours(groupedEvents[date].totalDuration),
+        events: groupedEvents[date].events
+    }));
+
+
+
+    return updatedUserEvents;
+
+};
 
 
 
