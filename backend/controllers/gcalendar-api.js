@@ -1,13 +1,119 @@
 import { google } from "googleapis";
 import User from "../models/User.js";
-import { isTimeStringUTC , findMinTime, findMaxTime} from "../utils/time-util.js";
-import { initializeOAuthClient } from "../utils/google-api-util.js";
+import { isTimeStringUTC, findMinTime, findMaxTime } from "../utils/time-util.js";
+import { initializeOAuthClient, isAccessTokenExpire } from "../utils/google-api-util.js";
 import { getAcessTokenFromRefreshToken } from "../utils/google-api-util.js";
 import { neonSQL } from "../db/neon.js";
 
 import { normalizedTitleFunction } from "../utils/general-utils.js";
 
 
+const fetchDataFromGoogleCalendar = async (auth, start, end) => {
+
+
+    if (!auth) {
+        const error = new Error("google access token expired or something else");
+        error.statusCode = 403;
+        throw error;
+    }
+
+
+    const calendar = google.calendar({ version: 'v3', auth });
+
+    const startTime = new Date(start);
+    const endTime = new Date(end);
+
+    try {
+
+        const fields = 'items(summary,start,end)';
+        const response = await calendar.events.list({
+            calendarId: 'primary', // you need to tell which calendar do you want to access, primary or secondary 
+            timeMin: startTime.toISOString(),
+            timeMax: endTime.toISOString(),
+            singleEvents: true,
+            orderBy: 'startTime',
+            timeZone: 'UTC',
+            fields
+        });
+
+        const items = response.data.items;
+        // console.log(items);
+
+        return items;
+
+    } catch (err) {
+
+        const error = new Error("failed to fetch data from google calendar");
+        error.statusCode = 403;
+        throw error
+    }
+
+
+};
+
+const processDataWithNeon = async (items, userEmail, start, end) => {
+
+    const startTime = new Date(start);
+    const endTime = new Date(end);
+
+    try {
+
+        const userEvents = await Promise.all(items.map(async (item) => {
+
+            let title = item.summary;
+            const start = item.start.dateTime;
+            const end = item.end.dateTime;
+            let isImportant = true;
+            let isUrgent = false;
+
+            const query = 'SELECT important, urgent FROM EVENTS WHERE email_id = $1 and event_name = $2';
+
+            if (!title) {
+                title = "No title";
+            }
+
+
+            const params = [userEmail, normalizedTitleFunction(title)];
+
+
+            // Parallelize the database call to reduce the api call timing.
+            const neonPromise = neonSQL(query, params).then(response => {
+                if (response && response.length > 0) {
+                    const { important: IsEventImportant, urgent: IsEventUrgent } = response[0];
+                    isImportant = IsEventImportant;
+                    isUrgent = IsEventUrgent;
+                }
+            });
+
+            // Wait for the result from neonSQL after finishing the mapping
+            await neonPromise;
+
+
+            const updatedEventStartTime = findMaxTime(startTime, start);
+            const updatedEventEndTime = findMinTime(endTime, end);
+
+
+            return {
+                title: title,
+                start: updatedEventStartTime,
+                end: updatedEventEndTime,
+                isImportant: isImportant,
+                isUrgent: isUrgent
+            };
+
+        }));
+
+        return userEvents;
+
+    } catch (err) {
+
+        const error = new Error("failed to process data with neon");
+        error.statusCode = 403;
+        throw error;
+    }
+
+
+};
 
 
 export const dayCalendarData = async (req, res, next) => {
@@ -29,10 +135,7 @@ export const dayCalendarData = async (req, res, next) => {
         let auth = await initializeOAuthClient(access_token, refresh_token, expiry_date);
 
 
-
-        // when access token expire, it generate new token and save it in the data base
-
-        if (auth.isTokenExpiring() === true) {
+        if (isAccessTokenExpire(expiry_date) === true) {
 
             const response = await getAcessTokenFromRefreshToken(refresh_token);
             const new_access_token = response.data.access_token;
@@ -42,19 +145,17 @@ export const dayCalendarData = async (req, res, next) => {
             const new_expire_date = curr_time + expiresIn;
             const updatedUser = await User.updateMany({ email: userEmail }, { $set: { accessToken: new_access_token, expireDate: new_expire_date } });
 
-            auth = await initializeOAuthClient(new_access_token, refresh_token, new_expire_date);
+
+            auth.setCredentials({
+                access_token: new_access_token,
+                refresh_token: refresh_token,
+                expiry_date: new_expire_date,
+            });
+
 
         }
 
 
-        if (!auth) {
-            const error = new Error("google access token expired or something else");
-            error.statusCode = 403;
-            throw error;
-        }
-
-
-        const calendar = google.calendar({ version: 'v3', auth });
 
         const start = req.query.start;
         const end = req.query.end;
@@ -71,86 +172,20 @@ export const dayCalendarData = async (req, res, next) => {
             throw error;
         }
 
-
-        const startTime = new Date(start);
-        const endTime = new Date(end);
-
-
-        try {
-
-            const response = await calendar.events.list({
-                calendarId: 'primary', // you need to tell which calendar do you want to access, primary or secondary 
-                timeMin: startTime.toISOString(),
-                timeMax: endTime.toISOString(),
-                singleEvents: true,
-                orderBy: 'startTime',
-                timeZone: 'UTC',
-            });
-
-            const items = response.data.items;
-  
+        console.log("start ", new Date());
+        const items = await fetchDataFromGoogleCalendar(auth, start, end);
+        console.log("goole ", new Date());
+        const processedEvents = await processDataWithNeon(items, userEmail, start, end);
+        console.log("nean ", new Date());
 
 
-            const userEvents = await Promise.all(items.map(async (item) => {
-
-                let title = item.summary; 
-                const start = item.start.dateTime;
-                const end = item.end.dateTime;
-                let isImportant = true;
-                let isUrgent = false;
-
-                const query = 'SELECT important, urgent FROM EVENTS WHERE email_id = $1 and event_name = $2';
-
-                if(!title){
-                    title = "No title";
-                }
-
-
-                const params = [userEmail, normalizedTitleFunction(title)];
-
-                const response = await neonSQL(query, params);
-                
-
-                if(response && response.length > 0){ 
-
-                    const {important: IsEventImportant, urgent: IsEventUrgent} = response[0];
-
-                    isImportant = IsEventImportant;
-                    isUrgent = IsEventUrgent;
-
-                }
-
-
-                const updatedEventStartTime =  findMaxTime(startTime, start);
-                const updatedEventEndTime = findMinTime(endTime, end);
-
- 
-                return {
-                    title: title,
-                    start: updatedEventStartTime,
-                    end: updatedEventEndTime,
-                    isImportant : isImportant,
-                    isUrgent : isUrgent
-                };
-
-            }));
-
-
-            return res.json({ userName: user.username, userEmail , reportSubscriptionEmail, events: userEvents,  reportSubscriptionStatue });
-
-        } catch (err) {
-
-            const error = new Error(err);
-            error.statusCode = 403;
-            throw error;
-        }
-
+        return res.json({ userName: user.username, userEmail, reportSubscriptionEmail, events: processedEvents, reportSubscriptionStatue });
 
     } catch (error) {
         next(error);
     }
 
-} 
+}
 
 export const weekEventsCalendarData = async (req, res, next) => {
 

@@ -63,7 +63,6 @@ export const getAcessTokenFromRefreshToken = async (refresh_token) => {
             client_secret: CLIENT_SECRET,
             refresh_token: refresh_token,
             grant_type: 'refresh_token',
-
         });
 
         return response;
@@ -72,4 +71,19 @@ export const getAcessTokenFromRefreshToken = async (refresh_token) => {
         throw error;
     }
 
+}
+
+
+export const isAccessTokenExpire = (expireDate) => {
+
+    // consoltypeof(expireDate) );
+
+    if(typeof(expireDate) !== "number"){
+        console.log("access token expire date is not number")
+        return false;
+    }
+
+    const currentTime = Date.now(); // Get the current time in milliseconds
+    const expirationBuffer = 5 * 60 * 1000; // 5 minutes before expiration
+    return expireDate - currentTime <= expirationBuffer;
 }

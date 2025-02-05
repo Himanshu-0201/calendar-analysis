@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
         required: true, // Make this required as you want to store it
     },
     expireDate : {
-        type : String,
+        type : Number,
         require : true
     },
     reportSubscriptionStatue : {
